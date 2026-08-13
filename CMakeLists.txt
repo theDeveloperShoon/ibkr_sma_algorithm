@@ -26,7 +26,7 @@ file(GLOB TWS_API_SOURCES
 )
 
 #
-add_library(ibkr_twsapi STATIC ${TWS_API_SOURCES}  "SMA.h" "SMA.cpp")
+add_library(ibkr_twsapi STATIC ${TWS_API_SOURCES}  "SMA.h" "SMA.cpp" "BackTester.h" "State.h")
 
 target_include_directories(ibkr_twsapi SYSTEM PUBLIC ${TWSAPI_DIR} ${TWSAPI_DIR}/protobuf)
 target_link_libraries(ibkr_twsapi PUBLIC protobuf::libprotobuf unofficial::intelrdfpmathlib::decimal128 Threads::Threads ws2_32)
@@ -39,10 +39,10 @@ endif()
 
 # Add source to this project's executable.
 add_executable(IBKR_CWMR_STRATEGY
-	"IBKR_CMAKE_MEAN_REVERSION.cpp"
-	"IBKR_CMAKE_MEAN_REVERSION.h"
+	"main.cpp"
+	"main.h"
 #	${TWS_API_SOURCES}
-  "CWMR_Client.h" "CWMR_Client.cpp" "Utility.h" "Utility.cpp" "SMA.h" "SMA.cpp")
+  "IBKR_Algo_Client.h" "IBKR_Algo_Client.cpp" "Utility.h" "Utility.cpp" "SMA.h" "SMA.cpp" "BackTester.h" "State.h")
 
 target_link_libraries(IBKR_CWMR_STRATEGY PRIVATE ibkr_twsapi)
 

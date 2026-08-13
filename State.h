@@ -1,0 +1,8 @@
+enum STATE
+{
+	BUY,
+	BOUGHT,
+	SELL,
+	SELLING,
+	NONE
+};

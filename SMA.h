@@ -1,11 +1,4 @@
-enum STATE
-{
-	BUY,
-	BOUGHT,
-	SELL,
-	SELLING,
-	NONE
-};
+#include "State.h"
 
 class SMA
 {
