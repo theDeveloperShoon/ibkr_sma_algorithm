@@ -1,6 +1,6 @@
 #pragma once
-#ifndef CWMR_STRATEGY_CWMR_CLIENT_H
-#define CWMR_STRATEGY_CWMR_CLIENT_H
+#ifndef IBKR_ALGO_STRATEGY_IBKR_ALGO_CLIENT_H
+#define IBKR_ALGO_STRATEGY_IBKR_ALGO_CLIENT_H
 
 #include "EWrapper.h"
 #include "EReaderOSSignal.h"
@@ -10,11 +10,11 @@
 
 class EClientSocket;
 
-class CWMR_Client : public EWrapper
+class IBKR_Algo_Client : public EWrapper
 {
 public:
-	CWMR_Client();
-	~CWMR_Client();
+	IBKR_Algo_Client();
+	~IBKR_Algo_Client();
 
 	void setConnectOptions(const std::string&);
 	void processMessages();
@@ -51,4 +51,4 @@ private:
 
 
 
-#endif // !CWMR_STRATEGY_CWMR_CLIENT_H
+#endif // !IBKR_ALGO_STRATEGY_IBKR_ALGO_CLIENT_H

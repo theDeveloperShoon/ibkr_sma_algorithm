@@ -1,4 +1,4 @@
-#include "CWMR_Client.h"
+#include "IBKR_Algo_Client.h"
 
 #include "Utility.h"
 
@@ -11,7 +11,7 @@
 #include <filesystem>
 #include <fstream>
 
-CWMR_Client::CWMR_Client() : 
+IBKR_Algo_Client::IBKR_Algo_Client() : 
 	m_osSignal(2000),
 	m_pClient(new EClientSocket(this, &m_osSignal)),
 	m_pReader(nullptr),
@@ -20,7 +20,7 @@ CWMR_Client::CWMR_Client() :
 {
 }
 
-CWMR_Client::~CWMR_Client()
+IBKR_Algo_Client::~IBKR_Algo_Client()
 {
 	if (m_pReader)
 	{
@@ -30,19 +30,19 @@ CWMR_Client::~CWMR_Client()
 	delete m_pClient;
 }
 
-void CWMR_Client::setConnectOptions(const std::string& connectOptions)
+void IBKR_Algo_Client::setConnectOptions(const std::string& connectOptions)
 {
 	m_pClient->setConnectOptions(connectOptions);
 }
 
-void CWMR_Client::processMessages()
+void IBKR_Algo_Client::processMessages()
 {
 	m_osSignal.waitForSignal();
 	errno = 0;
 	m_pReader->processMsgs();
 }
 
-bool CWMR_Client::connect(const std::string& host, int port, int clientId)
+bool IBKR_Algo_Client::connect(const std::string& host, int port, int clientId)
 {
 	std::string targetHost = host.empty() ? "127.0.0.1" : host;
 
@@ -65,13 +65,13 @@ bool CWMR_Client::connect(const std::string& host, int port, int clientId)
 	return bRes;
 }
 
-bool CWMR_Client::isConnected() const
+bool IBKR_Algo_Client::isConnected() const
 {
 	return m_pClient->isConnected();
 }
 
 // RHT is Regular Trading HGours
-void CWMR_Client::requestHistoricalData(int reqId, const Contract& contract,const std::string& endDateTime, const std::string& durationTime, const std::string& barSizeSetting,
+void IBKR_Algo_Client::requestHistoricalData(int reqId, const Contract& contract,const std::string& endDateTime, const std::string& durationTime, const std::string& barSizeSetting,
 	const std::string whatToShow, int useRTH, int formatDate, bool keepUpToDate, const TagValueListSPtr& chartOptions)
 {
 	if (this->isConnected())
@@ -92,18 +92,18 @@ void CWMR_Client::requestHistoricalData(int reqId, const Contract& contract,cons
 }
 
 
-[[maybe_unused]] void CWMR_Client::tickPrice([[maybe_unused]] int reqId, [[maybe_unused]] TickType field, [[maybe_unused]] double price, [[maybe_unused]] const TickAttrib& attribs) {}
-[[maybe_unused]] void CWMR_Client::tickSize([[maybe_unused]] int reqId, [[maybe_unused]] TickType field, [[maybe_unused]] Decimal size) {}
-[[maybe_unused]] void CWMR_Client::tickOptionComputation([[maybe_unused]] int reqId, [[maybe_unused]] TickType tickType, [[maybe_unused]] int tickAttrib, [[maybe_unused]] double impliedVol, [[maybe_unused]] double delta,
+[[maybe_unused]] void IBKR_Algo_Client::tickPrice([[maybe_unused]] int reqId, [[maybe_unused]] TickType field, [[maybe_unused]] double price, [[maybe_unused]] const TickAttrib& attribs) {}
+[[maybe_unused]] void IBKR_Algo_Client::tickSize([[maybe_unused]] int reqId, [[maybe_unused]] TickType field, [[maybe_unused]] Decimal size) {}
+[[maybe_unused]] void IBKR_Algo_Client::tickOptionComputation([[maybe_unused]] int reqId, [[maybe_unused]] TickType tickType, [[maybe_unused]] int tickAttrib, [[maybe_unused]] double impliedVol, [[maybe_unused]] double delta,
 	[[maybe_unused]] double optPrice, [[maybe_unused]] double pvDividend, [[maybe_unused]] double gamma, [[maybe_unused]] double vega, [[maybe_unused]] double theta, [[maybe_unused]] double undPrice) {
 }
-[[maybe_unused]] void CWMR_Client::tickGeneric([[maybe_unused]] int reqId, [[maybe_unused]] TickType tickType, [[maybe_unused]] double value) {}
-[[maybe_unused]] void CWMR_Client::tickString([[maybe_unused]] int reqId, [[maybe_unused]] TickType tickType, [[maybe_unused]] const std::string& value) {}
-[[maybe_unused]] void CWMR_Client::tickEFP([[maybe_unused]] int reqId, [[maybe_unused]] TickType tickType, [[maybe_unused]] double basisPoints, [[maybe_unused]] const std::string& formattedBasisPoints,
+[[maybe_unused]] void IBKR_Algo_Client::tickGeneric([[maybe_unused]] int reqId, [[maybe_unused]] TickType tickType, [[maybe_unused]] double value) {}
+[[maybe_unused]] void IBKR_Algo_Client::tickString([[maybe_unused]] int reqId, [[maybe_unused]] TickType tickType, [[maybe_unused]] const std::string& value) {}
+[[maybe_unused]] void IBKR_Algo_Client::tickEFP([[maybe_unused]] int reqId, [[maybe_unused]] TickType tickType, [[maybe_unused]] double basisPoints, [[maybe_unused]] const std::string& formattedBasisPoints,
 	[[maybe_unused]] double totalDividends, [[maybe_unused]] int holdDays, [[maybe_unused]] const std::string& futureLastTradeDate, [[maybe_unused]] double dividendImpact, [[maybe_unused]] double dividendsToLastTradeDate) {
 }
 
-[[maybe_unused]] void CWMR_Client::orderStatus(
+[[maybe_unused]] void IBKR_Algo_Client::orderStatus(
 	[[maybe_unused]] int orderId, 
 	[[maybe_unused]] const std::string& status, 
 	[[maybe_unused]] Decimal filled,
@@ -116,58 +116,58 @@ void CWMR_Client::requestHistoricalData(int reqId, const Contract& contract,cons
 	[[maybe_unused]] const std::string& whyHeld, 
 	[[maybe_unused]] double mktCapPrice) 
 {}
-[[maybe_unused]] void CWMR_Client::openOrder([[maybe_unused]] int orderId, [[maybe_unused]] const Contract&, [[maybe_unused]] const Order&, [[maybe_unused]] const OrderState&) {}
-[[maybe_unused]] void CWMR_Client::openOrderEnd() {}
+[[maybe_unused]] void IBKR_Algo_Client::openOrder([[maybe_unused]] int orderId, [[maybe_unused]] const Contract&, [[maybe_unused]] const Order&, [[maybe_unused]] const OrderState&) {}
+[[maybe_unused]] void IBKR_Algo_Client::openOrderEnd() {}
 
-[[maybe_unused]] void CWMR_Client::winError([[maybe_unused]] const std::string& str, [[maybe_unused]] int lastError) {}
+[[maybe_unused]] void IBKR_Algo_Client::winError([[maybe_unused]] const std::string& str, [[maybe_unused]] int lastError) {}
 
-void CWMR_Client::connectionClosed() {
+void IBKR_Algo_Client::connectionClosed() {
 	std::println("Connection closed");
 }
 
-void CWMR_Client::updateAccountValue(const std::string& key, const std::string& val,
+void IBKR_Algo_Client::updateAccountValue(const std::string& key, const std::string& val,
 	const std::string& currency, const std::string& accountName) {
 	std::println("Account Value. Key: {}, Value: {}, Currency: {}, AccountName: {}", key, val, currency, accountName);
 }
 
-void CWMR_Client::updatePortfolio(const Contract& contract, Decimal position,
+void IBKR_Algo_Client::updatePortfolio(const Contract& contract, Decimal position,
 	double marketPrice, double marketValue, double averageCost,
 	double unrealizedPNL, double realizedPNL, const std::string& accountName) {
 	std::println("Update Portfolio. Symbol: {}, SecType: {}, Currency: {}, Position: {}, MarketPrice: {}, MarketValue: {}, AverageCost: {}, UnrealizedPNL: {}, RealizedPNL: {}, AccountName: {}",
 		contract.symbol, contract.secType, contract.currency, (unsigned long long)position, marketPrice, marketValue, averageCost, unrealizedPNL, realizedPNL, accountName);
 }
 
-void CWMR_Client::updateAccountTime(const std::string& timeStamp) {
+void IBKR_Algo_Client::updateAccountTime(const std::string& timeStamp) {
 	std::println("Update Account Time. Time: {}", timeStamp);
 }
 
-void CWMR_Client::accountDownloadEnd(const std::string& accountName) {
+void IBKR_Algo_Client::accountDownloadEnd(const std::string& accountName) {
 	std::println("Account Download End. AccountName: {}", accountName);
 }
 
-void CWMR_Client::nextValidId(int orderId) {
+void IBKR_Algo_Client::nextValidId(int orderId) {
 	std::println("Next Valid Id: {}", orderId);
 	m_orderId = orderId;
 }
 
-void CWMR_Client::contractDetails(int reqId, const ContractDetails& contractDetails) {
+void IBKR_Algo_Client::contractDetails(int reqId, const ContractDetails& contractDetails) {
 	std::println("ContractDetails begin. ReqId: {}", reqId);
 	printContractMsg(contractDetails.contract);
 	printContractDetailsMsg(contractDetails);
 	std::println("ContractDetails end. ReqId: {}", reqId);
 }
 
-void CWMR_Client::bondContractDetails(int reqId, const ContractDetails& contractDetails) {
+void IBKR_Algo_Client::bondContractDetails(int reqId, const ContractDetails& contractDetails) {
 	std::println("BondContractDetails begin. ReqId: {}", reqId);
 	printBondContractDetailsMsg(contractDetails);
 	std::println("BondContractDetails end. ReqId: {}", reqId);
 }
 
-void CWMR_Client::contractDetailsEnd(int reqId) {
+void IBKR_Algo_Client::contractDetailsEnd(int reqId) {
 	std::println("ContractDetailsEnd. ReqId: {}", reqId);
 }
 
-void CWMR_Client::execDetails(int reqId, const Contract& contract, const Execution& execution) {
+void IBKR_Algo_Client::execDetails(int reqId, const Contract& contract, const Execution& execution) {
 	std::println("ExecDetails. ReqId: {}, Contnract - ConId: {}, Symbol: {}, SecType: {}, "
 		"LastTradeDateOrContractMonth: {}, Strike: {}, Right: {}, Multiplier: {}, "
 		"Exchange: {}, Currency: {}, LocalSymbol: {}, TradingClass: {}, "
@@ -187,11 +187,11 @@ void CWMR_Client::execDetails(int reqId, const Contract& contract, const Executi
 		execution.pendingPriceRevision ? "Yes" : "No",	execution.submitter, Utility::getOptionExerciseTypeName(execution.optExerciseOrLapseType));
 }
 
-void CWMR_Client::execDetailsEnd(int reqId){
+void IBKR_Algo_Client::execDetailsEnd(int reqId){
 	std::println("ExecDetailsEnds. ReqId: {}", reqId);
 }
 
-void CWMR_Client::error(int id, time_t errorTime, int errorCode, const std::string& errorString,
+void IBKR_Algo_Client::error(int id, time_t errorTime, int errorCode, const std::string& errorString,
 	const std::string& advancedOrderRejectJson) {
 	
 	std::string errorTimeStr;
@@ -211,7 +211,7 @@ void CWMR_Client::error(int id, time_t errorTime, int errorCode, const std::stri
 	}
 }
 
-void CWMR_Client::updateMktDepth(int reqId, int position, int operation, int side, 
+void IBKR_Algo_Client::updateMktDepth(int reqId, int position, int operation, int side, 
 	double price, Decimal size) {
 	std::println("UpdateMarketDepth. {} - Positionn: {}, Operation: {}, Side: {}, "
 		"Price: {}, Size: {}", reqId, Utility::intMaxString(position), operation, side,
@@ -219,7 +219,7 @@ void CWMR_Client::updateMktDepth(int reqId, int position, int operation, int sid
 }
 
 
-void CWMR_Client::updateMktDepthL2(int reqId, int position, [[maybe_unused]] const std::string& marketMaker,
+void IBKR_Algo_Client::updateMktDepthL2(int reqId, int position, [[maybe_unused]] const std::string& marketMaker,
 	int operation, int side, double price, Decimal size, bool isSmartDepth) {
 	std::println("UpdateMarketDepthL2. {} - Position: {}, Operation: {}, Side: {}, "
 		"Price: {}, Size: {}, isSmartDepth: {}", reqId, Utility::intMaxString(position),
@@ -227,36 +227,36 @@ void CWMR_Client::updateMktDepthL2(int reqId, int position, [[maybe_unused]] con
 		isSmartDepth);
 }
 
-void CWMR_Client::updateNewsBulletin(int msgId, int msgType, const std::string& newMessage, const std::string& originExch){
+void IBKR_Algo_Client::updateNewsBulletin(int msgId, int msgType, const std::string& newMessage, const std::string& originExch){
 	std::println("News Bulletins. {} - Type: {}, Message: {}, Exhcange of Origin: {}",
 		msgId, msgType, newMessage, originExch);
 }
 
-void CWMR_Client::managedAccounts(const std::string& accountsList) {
+void IBKR_Algo_Client::managedAccounts(const std::string& accountsList) {
 	std::println("Account List: {}", accountsList);
 }
 
-void CWMR_Client::receiveFA(faDataType pFaDataType, const std::string& cxml) {
+void IBKR_Algo_Client::receiveFA(faDataType pFaDataType, const std::string& cxml) {
 	std::println("Receiving Fa: {}", std::to_underlying(pFaDataType));
 	std::println("{}", cxml);
 }
 
-void CWMR_Client::historicalData(int reqId, const Bar& bar) {
+void IBKR_Algo_Client::historicalData(int reqId, const Bar& bar) {
 	std::println("HistoricalData. ReqId: {} - Date: {}, Open: {}, High: {}, Low: {}, "
 		"Close: {}, Volume: {}, Count: {}, WAP: {}", reqId, bar.time, Utility::doubleMaxString(bar.open),
 		Utility::doubleMaxString(bar.high), Utility::doubleMaxString(bar.low), Utility::doubleMaxString(bar.close),
 		DecimalFunctions::decimalStringToDisplay(bar.volume), Utility::intMaxString(bar.count), DecimalFunctions::decimalStringToDisplay(bar.wap));
 }
 
-void CWMR_Client::historicalDataEnd(int reqId, const std::string& startDateStr, const std::string& endDateStr) {
+void IBKR_Algo_Client::historicalDataEnd(int reqId, const std::string& startDateStr, const std::string& endDateStr) {
 	std::println("HistoricalDataEnd. ReqId: {}, StartDate: {}, EndDate: {}", reqId, startDateStr, endDateStr);
 }
 
-void CWMR_Client::scannerParameters(const std::string& xml) {
+void IBKR_Algo_Client::scannerParameters(const std::string& xml) {
 	std::println("ScannerParameters. {}", xml);
 }
 
-void CWMR_Client::scannerData(int reqId, int rank, const ContractDetails& contractDetails,
+void IBKR_Algo_Client::scannerData(int reqId, int rank, const ContractDetails& contractDetails,
 	const std::string& distance, const std::string& benchmark, const std::string& projection,
 	const std::string& legsStr) {
 	std::println("ScannerData. ReqId: {}, Rank: {}, Symbol: {}, SecType:{}, Currency: {}, "
@@ -265,11 +265,11 @@ void CWMR_Client::scannerData(int reqId, int rank, const ContractDetails& contra
 		contractDetails.contract.currency, distance, benchmark, projection, legsStr);
 }
 
-void CWMR_Client::scannerDataEnd(int reqId) {
+void IBKR_Algo_Client::scannerDataEnd(int reqId) {
 	std::println("ScannerDataEnd. ReqId: {}", reqId);
 }
 
-void CWMR_Client::realtimeBar(int reqId, long long time, double open, double high, double low,
+void IBKR_Algo_Client::realtimeBar(int reqId, long long time, double open, double high, double low,
 	double close, Decimal volume, Decimal wap, int count) {
 	std::println("RealTimeBar. ReqId: {} - Time: {}, Open: {}, High: {}, Low: {}, Close: {}, "
 		"Volume: {}, Count: {}, WAP: {}", reqId, Utility::llongMaxString(time), Utility::doubleMaxString(open), Utility::doubleMaxString(high),
@@ -277,7 +277,7 @@ void CWMR_Client::realtimeBar(int reqId, long long time, double open, double hig
 		Utility::intMaxString(count), DecimalFunctions::decimalStringToDisplay(wap));
 }
 
-void CWMR_Client::currentTime(long long time) {
+void IBKR_Algo_Client::currentTime(long long time) {
 	const std::chrono::sys_seconds tp{std::chrono::seconds{time}};
 	const std::chrono::zoned_time localTp{std::chrono::current_zone(), tp};
 	const std::string localTimeStr = std::format("{:%Y-%m-%d %H:%M:%S}", localTp);
@@ -287,83 +287,83 @@ void CWMR_Client::currentTime(long long time) {
 	// TODO: ADD STATE
 }
 
-void CWMR_Client::fundamentalData(int reqId, const std::string& data) {
+void IBKR_Algo_Client::fundamentalData(int reqId, const std::string& data) {
 	std::println("Fundamental Data Request ({}), {}",reqId, data);
 }
 
 
-void CWMR_Client::deltaNeutralValidation(int reqId, const DeltaNeutralContract& deltaNeutralContract) {
+void IBKR_Algo_Client::deltaNeutralValidation(int reqId, const DeltaNeutralContract& deltaNeutralContract) {
 	std::println("DeltaNeutralValidation. ReqId: {}, ConId: {}, Delta: {}, Price: {}",
 		reqId, deltaNeutralContract.conId, Utility::doubleMaxString(deltaNeutralContract.delta),
 		Utility::doubleMaxString(deltaNeutralContract.price));
 }
 
-void CWMR_Client::tickSnapshotEnd(int reqId) {
+void IBKR_Algo_Client::tickSnapshotEnd(int reqId) {
 	std::println("TickSnapshotEnd. ReqId: {}", reqId);
 }
 
-void CWMR_Client::marketDataType(int reqId, int marketDataType) {
+void IBKR_Algo_Client::marketDataType(int reqId, int marketDataType) {
 	std::println("MarketDataType. ReqId: {}, MarketDataType: {}", reqId, marketDataType);
 }
 
-void CWMR_Client::commissionAndFeesReport(const CommissionAndFeesReport& commissionAndFeesReport) {
+void IBKR_Algo_Client::commissionAndFeesReport(const CommissionAndFeesReport& commissionAndFeesReport) {
 	std::println("CommissionAndFeesReport. ExecId: {}, CommissionAndFees: {}, Currency: {}, RealizedPNL: {}",
 		commissionAndFeesReport.execId, commissionAndFeesReport.commissionAndFees, commissionAndFeesReport.currency,
 		commissionAndFeesReport.realizedPNL);
 }
 
-void CWMR_Client::position(const std::string& account, const Contract& contract, Decimal position, double avgCost) {
+void IBKR_Algo_Client::position(const std::string& account, const Contract& contract, Decimal position, double avgCost) {
 	std::println("Position. Account: {}, Symbol: {}, SecType: {}, Currency: {}, Position: {}, AvgCost: {}",
 		account, contract.symbol, contract.secType, contract.currency, 
 		DecimalFunctions::decimalStringToDisplay(position), 
 		Utility::doubleMaxString(avgCost));
 }
 
-void CWMR_Client::positionEnd() {
+void IBKR_Algo_Client::positionEnd() {
 	std::println("PositionEnd");
 }
 
-void CWMR_Client::accountSummary(int reqId, const std::string& account, const std::string& tag,
+void IBKR_Algo_Client::accountSummary(int reqId, const std::string& account, const std::string& tag,
 	const std::string& value, const std::string& currency) {
 	std::println("AccountSummary. ReqId: {}, Account: {}, Tag: {}, Value: {}, Currency: {}",
 		reqId, account, tag, value, currency);
 }
 
-void CWMR_Client::accountSummaryEnd(int reqId) {
+void IBKR_Algo_Client::accountSummaryEnd(int reqId) {
 	std::println("AccountSummaryEnd. ReqId: {}", reqId);
 }
 
-void CWMR_Client::verifyMessageAPI(const std::string& apiData) {
+void IBKR_Algo_Client::verifyMessageAPI(const std::string& apiData) {
 	std::println("VerifyMessageAPI. ApiData: {}", apiData);
 }
 
-void CWMR_Client::verifyCompleted(bool isSuccessful, const std::string& errorText) {
+void IBKR_Algo_Client::verifyCompleted(bool isSuccessful, const std::string& errorText) {
 	std::println("VerifyCompleted. IsSuccessful: {} - Error: {}", isSuccessful ? "Yes" : "No", errorText);
 }
 
-void CWMR_Client::displayGroupList(int reqId, const std::string& groups) {
+void IBKR_Algo_Client::displayGroupList(int reqId, const std::string& groups) {
 	std::println("DisplayGroupList. ReqId: {}, Groups: {}", reqId, groups);
 }
 
-void CWMR_Client::displayGroupUpdated(int reqId, const std::string& contractInfo) {
+void IBKR_Algo_Client::displayGroupUpdated(int reqId, const std::string& contractInfo) {
 	std::println("DisplayGroupUpdated. ReqId: {}, ContractInfo: {}", reqId, contractInfo);
 }
 
-void CWMR_Client::verifyAndAuthMessageAPI(const std::string& apiData, const std::string& xyzChallange) {
+void IBKR_Algo_Client::verifyAndAuthMessageAPI(const std::string& apiData, const std::string& xyzChallange) {
 	std::println("VerifyAndAuthMessageAPI. ApiData: {}, XyzChallenge: {}", apiData, xyzChallange);
 }
 
-void CWMR_Client::verifyAndAuthCompleted(bool isSuccessful, const std::string& errorText) {
+void IBKR_Algo_Client::verifyAndAuthCompleted(bool isSuccessful, const std::string& errorText) {
 	std::println("VerifyAndAuthCompleted. IsSuccessful: {} - Error: {}", isSuccessful ? "Yes" : "No", errorText);
 	if (isSuccessful) m_pClient->startApi();
 }
 
-void CWMR_Client::connectAck() {
+void IBKR_Algo_Client::connectAck() {
 	if (!m_extraAuth && m_pClient->asyncEConnect()) 
 		m_pClient->startApi();
 }
 
-void CWMR_Client::positionMulti(int reqId, const std::string& account, const std::string& modelCode,
+void IBKR_Algo_Client::positionMulti(int reqId, const std::string& account, const std::string& modelCode,
 	const Contract& contract, Decimal pos, double avgCost) {
 	std::println("PositionMulti. ReqId: {}, Account: {}, ModelCode: {}, Symbol: {}, "
 		"SecType: {}, Currency: {}, Position: {}, AvgCost: {}", reqId, account, 
@@ -371,21 +371,21 @@ void CWMR_Client::positionMulti(int reqId, const std::string& account, const std
 		DecimalFunctions::decimalStringToDisplay(pos), Utility::doubleMaxString(avgCost));
 }
 
-void CWMR_Client::positionMultiEnd(int reqId) {
+void IBKR_Algo_Client::positionMultiEnd(int reqId) {
 	std::println("PositionMultiEnd. ReqId: {}", reqId);
 }
 
-void CWMR_Client::accountUpdateMulti(int reqId, const std::string& account, const std::string& modelCode,
+void IBKR_Algo_Client::accountUpdateMulti(int reqId, const std::string& account, const std::string& modelCode,
 	const std::string& key, const std::string& value, const std::string& currency) {
 	std::println("AccountUpdateMulti. ReqId: {}, Account: {}, ModelCode: {}, Key: {}, Value: {}, Currency: {}",
 		reqId, account, modelCode, key, value, currency);
 }
 
-void CWMR_Client::accountUpdateMultiEnd(int reqId) {
+void IBKR_Algo_Client::accountUpdateMultiEnd(int reqId) {
 	std::println("AccountUpdateMultiEnd. ReqId: {}", reqId);
 }
 
-void CWMR_Client::securityDefinitionOptionalParameter(int reqId, const std::string& exchange,
+void IBKR_Algo_Client::securityDefinitionOptionalParameter(int reqId, const std::string& exchange,
 	int underlyingConId, const std::string& tradingClass, const std::string& multiplier,
 	const std::set<std::string>& expirations, const std::set<double>& strikes) {
 	std::println("SecurityDefinitionOptionalParameter. ReqId: {}, Exchange: {}, "
@@ -408,11 +408,11 @@ void CWMR_Client::securityDefinitionOptionalParameter(int reqId, const std::stri
 	std::println();
 }
 
-void CWMR_Client::securityDefinitionOptionalParameterEnd(int reqId) {
+void IBKR_Algo_Client::securityDefinitionOptionalParameterEnd(int reqId) {
 	std::println("SecurityDefinitionOptionalParameterEnd. ReqId: {}", reqId);
 }
 
-void CWMR_Client::softDollarTiers(int reqId, const std::vector<SoftDollarTier>& tiers) {
+void IBKR_Algo_Client::softDollarTiers(int reqId, const std::vector<SoftDollarTier>& tiers) {
 	std::println("SoftDollarTiers. ReqId: {}, Tiers: {}", reqId, tiers.size());
 
 	for (const SoftDollarTier& tier : tiers) {
@@ -420,7 +420,7 @@ void CWMR_Client::softDollarTiers(int reqId, const std::vector<SoftDollarTier>& 
 	}
 }
 
-void CWMR_Client::familyCodes(const std::vector<FamilyCode>& familyCodes) {
+void IBKR_Algo_Client::familyCodes(const std::vector<FamilyCode>& familyCodes) {
 	std::println("Family Codes ({})", familyCodes.size());
 	for (const FamilyCode& familyCode : familyCodes) {
 		std::println("Family Code accountId: {} familyCodeStr: {}", 
@@ -428,7 +428,7 @@ void CWMR_Client::familyCodes(const std::vector<FamilyCode>& familyCodes) {
 	}
 }
 
-void CWMR_Client::symbolSamples(int reqId, const std::vector<ContractDescription>& contractDescriptions) {
+void IBKR_Algo_Client::symbolSamples(int reqId, const std::vector<ContractDescription>& contractDescriptions) {
 	std::println("Symbol Samples (total={}) reqId: {}", contractDescriptions.size(), reqId);
 
 	for (const ContractDescription& contractDescription : contractDescriptions) {
@@ -448,7 +448,7 @@ void CWMR_Client::symbolSamples(int reqId, const std::vector<ContractDescription
 	}
 }
 
-void CWMR_Client::mktDepthExchanges(const std::vector<DepthMktDataDescription>& depthMktDataDescriptions) {
+void IBKR_Algo_Client::mktDepthExchanges(const std::vector<DepthMktDataDescription>& depthMktDataDescriptions) {
 	std::println("Market Depth Exchanges (total={})", depthMktDataDescriptions.size());
 
 	for (const DepthMktDataDescription& depthMktDataDescription : depthMktDataDescriptions) {
@@ -459,7 +459,7 @@ void CWMR_Client::mktDepthExchanges(const std::vector<DepthMktDataDescription>& 
 	}
 }
 
-void CWMR_Client::tickNews(int reqId, time_t timeStamp, const std::string& providerCode,
+void IBKR_Algo_Client::tickNews(int reqId, time_t timeStamp, const std::string& providerCode,
 	const std::string& articleId, const std::string& headline, const std::string& extraData) {
 	std::string timeString;
 
@@ -470,7 +470,7 @@ void CWMR_Client::tickNews(int reqId, time_t timeStamp, const std::string& provi
 		reqId, timeString, providerCode, articleId, headline, extraData);
 }
 
-void CWMR_Client::smartComponents([[maybe_unused]]int reqId, const SmartComponentsMap& theMap) {
+void IBKR_Algo_Client::smartComponents([[maybe_unused]]int reqId, const SmartComponentsMap& theMap) {
 	std::println("Smart Components. ({}):", theMap.size());
 
 	for (const auto& [bitNumber, smartComponent] : theMap) {
@@ -480,13 +480,13 @@ void CWMR_Client::smartComponents([[maybe_unused]]int reqId, const SmartComponen
 	}
 }
 
-void CWMR_Client::tickReqParams(int reqId, double minTick, const std::string& bboExchange,
+void IBKR_Algo_Client::tickReqParams(int reqId, double minTick, const std::string& bboExchange,
 	int snapshotPermissions) {
 	std::println("Tick Req Params. TickerId: {}, MinTick: {}, BBOExchange: {}, SnapshotPermissions: {}",
 		reqId, Utility::doubleMaxString(minTick), bboExchange, snapshotPermissions);
 }
 
-void CWMR_Client::newsProviders(const std::vector<NewsProvider>& newsProviders) {
+void IBKR_Algo_Client::newsProviders(const std::vector<NewsProvider>& newsProviders) {
 	std::println("News Providers ({}):", newsProviders.size());
 
 	for (const NewsProvider& newsProvider : newsProviders) {
@@ -494,7 +494,7 @@ void CWMR_Client::newsProviders(const std::vector<NewsProvider>& newsProviders) 
 	}
 }
 
-void CWMR_Client::newsArticle(int reqId, int articleType, const std::string& articleText) {
+void IBKR_Algo_Client::newsArticle(int reqId, int articleType, const std::string& articleText) {
 	std::println("News Article. ReqId: {}, ArticleType: {}", reqId, articleType);
 	if (articleType == 0) {
 		std::println("News Article  Text (text or html): {}", articleText);
@@ -508,16 +508,16 @@ void CWMR_Client::newsArticle(int reqId, int articleType, const std::string& art
 	}
 }
 
-void CWMR_Client::historicalNews([[maybe_unused]] int reqId, [[maybe_unused]] const std::string& time, [[maybe_unused]] const std::string& providerCode,
+void IBKR_Algo_Client::historicalNews([[maybe_unused]] int reqId, [[maybe_unused]] const std::string& time, [[maybe_unused]] const std::string& providerCode,
 	[[maybe_unused]] const std::string& articleId, [[maybe_unused]] const std::string& headline) {}
 
-void CWMR_Client::historicalNewsEnd([[maybe_unused]] int reqId, [[maybe_unused]] bool hasMore) {}
+void IBKR_Algo_Client::historicalNewsEnd([[maybe_unused]] int reqId, [[maybe_unused]] bool hasMore) {}
 
-void CWMR_Client::headTimestamp(int reqId, const std::string& headTimestamp) {
+void IBKR_Algo_Client::headTimestamp(int reqId, const std::string& headTimestamp) {
 	std::println("Head Timestamp. ReqId: {}, HeadTimestamp: {}", reqId, headTimestamp);
 }
 
-void CWMR_Client::histogramData(int reqId, const HistogramDataVector& data) {
+void IBKR_Algo_Client::histogramData(int reqId, const HistogramDataVector& data) {
 	std::println("Histogram Data. ReqId: {}, DataSize: {}", reqId, data.size());
 
 	for (const HistogramEntry& histogramData : data) {
@@ -526,22 +526,22 @@ void CWMR_Client::histogramData(int reqId, const HistogramDataVector& data) {
 	}
 }
 
-void CWMR_Client::historicalDataUpdate(int reqId, const Bar& bar) {
+void IBKR_Algo_Client::historicalDataUpdate(int reqId, const Bar& bar) {
 	std::println("Historical Data Update. ReqId: {}, Date: {}, Open: {}, High: {}, Low: {}, Close: {}, "
 		"Volume: {}, Count: {}, WAP: {}", reqId, bar.time, Utility::doubleMaxString(bar.open),
 		Utility::doubleMaxString(bar.high), Utility::doubleMaxString(bar.low), Utility::doubleMaxString(bar.close),
 		DecimalFunctions::decimalStringToDisplay(bar.volume), Utility::intMaxString(bar.count), DecimalFunctions::decimalStringToDisplay(bar.wap));
 }
 
-void CWMR_Client::rerouteMktDataReq(int reqId, int conId, const std::string& exchange) {
+void IBKR_Algo_Client::rerouteMktDataReq(int reqId, int conId, const std::string& exchange) {
 	std::println("Reroute Market Data Request. ReqId: {}, ConId: {}, Exchange: {}", reqId, conId, exchange);
 }
 
-void CWMR_Client::rerouteMktDepthReq(int reqId, int conId, const std::string& exchange) {
+void IBKR_Algo_Client::rerouteMktDepthReq(int reqId, int conId, const std::string& exchange) {
 	std::println("Reroute Market Depth Request. ReqId: {}, ConId: {}, Exchange: {}", reqId, conId, exchange);
 }
 
-void CWMR_Client::marketRule(int marketRuleId, const std::vector<PriceIncrement>& priceIncrements) {
+void IBKR_Algo_Client::marketRule(int marketRuleId, const std::vector<PriceIncrement>& priceIncrements) {
 	std::println("Market Rule. MarketRuleId: {}", marketRuleId);
 	for (const PriceIncrement& priceIncrement : priceIncrements) {
 		std::println("LowEdge: {}, Increment: {}, ", 
@@ -550,13 +550,13 @@ void CWMR_Client::marketRule(int marketRuleId, const std::vector<PriceIncrement>
 	}
 }
 
-void CWMR_Client::pnl(int reqId, double dailyPnL, double unrealizedPnL, double realizedPnL) {
+void IBKR_Algo_Client::pnl(int reqId, double dailyPnL, double unrealizedPnL, double realizedPnL) {
 	std::println("PnL. ReqId: {}, DailyPnL: {}, UnrealizedPnL: {}, RealizedPnL: {}",
 		reqId, Utility::doubleMaxString(dailyPnL), Utility::doubleMaxString(unrealizedPnL), 
 		Utility::doubleMaxString(realizedPnL));
 }
 
-void CWMR_Client::pnlSingle(int reqId, Decimal pos, double dailyPnL, 
+void IBKR_Algo_Client::pnlSingle(int reqId, Decimal pos, double dailyPnL, 
 	double unrealizedPnL, double realizedPnL, double value) {
 	std::println("PnLSingle. ReqId: {}, Pos: {}, DailyPnL: {}, UnrealizedPnL: {}, RealizedPnL: {}, Value: {}",
 		reqId, DecimalFunctions::decimalStringToDisplay(pos), Utility::doubleMaxString(dailyPnL),
@@ -564,7 +564,7 @@ void CWMR_Client::pnlSingle(int reqId, Decimal pos, double dailyPnL,
 		Utility::doubleMaxString(value));
 }
 
-void CWMR_Client::historicalTicks(int reqId, const std::vector<HistoricalTick>& ticks,[[maybe_unused]] bool done) {
+void IBKR_Algo_Client::historicalTicks(int reqId, const std::vector<HistoricalTick>& ticks,[[maybe_unused]] bool done) {
 	std::string timeString;
 	for (const HistoricalTick& tick : ticks) {
 		auto tp = std::chrono::system_clock::time_point{ std::chrono::milliseconds{tick.time} };
@@ -576,7 +576,7 @@ void CWMR_Client::historicalTicks(int reqId, const std::vector<HistoricalTick>& 
 	}
 }
 
-void CWMR_Client::historicalTicksBidAsk(int reqId, const std::vector<HistoricalTickBidAsk>& ticks,[[maybe_unused]] bool done) {
+void IBKR_Algo_Client::historicalTicksBidAsk(int reqId, const std::vector<HistoricalTickBidAsk>& ticks,[[maybe_unused]] bool done) {
 	std::string timeString;
 	for (const HistoricalTickBidAsk& tick : ticks) {
 		auto tp = std::chrono::system_clock::time_point{ std::chrono::milliseconds{tick.time} };
@@ -590,7 +590,7 @@ void CWMR_Client::historicalTicksBidAsk(int reqId, const std::vector<HistoricalT
 	}
 }
 
-void CWMR_Client::historicalTicksLast(int reqId, const std::vector<HistoricalTickLast>& ticks,[[maybe_unused]] bool done) {
+void IBKR_Algo_Client::historicalTicksLast(int reqId, const std::vector<HistoricalTickLast>& ticks,[[maybe_unused]] bool done) {
 	std::string timeString;
 	for (const HistoricalTickLast& tick : ticks) {
 		auto tp = std::chrono::system_clock::time_point{ std::chrono::milliseconds{tick.time} };
@@ -604,7 +604,7 @@ void CWMR_Client::historicalTicksLast(int reqId, const std::vector<HistoricalTic
 	}
 }
 
-void CWMR_Client::tickByTickAllLast(int reqId, int tickType, time_t time, double price, Decimal size,
+void IBKR_Algo_Client::tickByTickAllLast(int reqId, int tickType, time_t time, double price, Decimal size,
 	const TickAttribLast& tickAttribLast, const std::string& exchange, const std::string& specialConditions) {
 	std::string timeString;
 	auto tp = std::chrono::system_clock::time_point{ std::chrono::milliseconds{time} };
@@ -618,7 +618,7 @@ void CWMR_Client::tickByTickAllLast(int reqId, int tickType, time_t time, double
 		tickAttribLast.unreported, tickAttribLast.pastLimit);
 }
 
-void CWMR_Client::tickByTickBidAsk(int reqId, time_t time, double bidPrice, double askPrice,
+void IBKR_Algo_Client::tickByTickBidAsk(int reqId, time_t time, double bidPrice, double askPrice,
 	Decimal bidSize, Decimal askSize, const TickAttribBidAsk& tickAttribBidAsk) {
 	std::string timeString;
 	auto tp = std::chrono::system_clock::time_point{ std::chrono::milliseconds{time} };
@@ -632,7 +632,7 @@ void CWMR_Client::tickByTickBidAsk(int reqId, time_t time, double bidPrice, doub
 		tickAttribBidAsk.bidPastLow, tickAttribBidAsk.askPastHigh);
 }
 
-void CWMR_Client::tickByTickMidPoint(int reqId, time_t time, double midPoint) {
+void IBKR_Algo_Client::tickByTickMidPoint(int reqId, time_t time, double midPoint) {
 	std::string timeString;
 	auto tp = std::chrono::system_clock::time_point{ std::chrono::milliseconds{time} };
 	timeString = std::format("{:%c}", std::chrono::floor<std::chrono::seconds>(tp));
@@ -641,28 +641,28 @@ void CWMR_Client::tickByTickMidPoint(int reqId, time_t time, double midPoint) {
 		reqId, timeString, Utility::doubleMaxString(midPoint));
 }
 
-void CWMR_Client::orderBound(long long permId, int apiClientId, int apiOrderId) {
+void IBKR_Algo_Client::orderBound(long long permId, int apiClientId, int apiOrderId) {
 	std::println("Order Bound. PermId: {}, ApiClientId: {}, ApiOrderId: {}",
 		Utility::llongMaxString(permId), Utility::intMaxString(apiClientId), Utility::intMaxString(apiOrderId));
 }
 
-void CWMR_Client::completedOrder([[maybe_unused]] const Contract& contract, [[maybe_unused]] const Order& order, [[maybe_unused]] const OrderState& orderState) {}
+void IBKR_Algo_Client::completedOrder([[maybe_unused]] const Contract& contract, [[maybe_unused]] const Order& order, [[maybe_unused]] const OrderState& orderState) {}
 
-void CWMR_Client::completedOrdersEnd() {}
+void IBKR_Algo_Client::completedOrdersEnd() {}
 
-void CWMR_Client::replaceFAEnd(int reqId, const std::string& text) {
+void IBKR_Algo_Client::replaceFAEnd(int reqId, const std::string& text) {
 	std::println("Replace FA End. ReqId: {}, Text: {}", reqId, text);
 }
 
-void CWMR_Client::wshMetaData(int reqId, const std::string& dataJson) {
+void IBKR_Algo_Client::wshMetaData(int reqId, const std::string& dataJson) {
 	std::println("WSH Meta Data. ReqId: {}, DataJson: {}", reqId, dataJson);
 }
 
-void CWMR_Client::wshEventData(int reqId, const std::string& dataJson) {
+void IBKR_Algo_Client::wshEventData(int reqId, const std::string& dataJson) {
 	std::println("WSH Event Data. ReqId: {}, DataJson: {}", reqId, dataJson);
 }
 
-void CWMR_Client::historicalSchedule(int reqId, const std::string& startDateTime,
+void IBKR_Algo_Client::historicalSchedule(int reqId, const std::string& startDateTime,
 	const std::string& endDateTime,	const std::string& timeZone, 
 	const std::vector<HistoricalSession>& sessions) {
 	std::println("Historical Schedule. ReqId: {}, Start: {}, End: {}, TimeZone: {}",
@@ -673,11 +673,11 @@ void CWMR_Client::historicalSchedule(int reqId, const std::string& startDateTime
 	}
 }
 
-void CWMR_Client::userInfo(int reqId, const std::string& whiteBrandingId) {
+void IBKR_Algo_Client::userInfo(int reqId, const std::string& whiteBrandingId) {
 	std::println("User Info. ReqId: {}, WhiteBrandingId: {}", reqId, whiteBrandingId);
 }
 
-void CWMR_Client::currentTimeInMillis(time_t timeInMillis) {
+void IBKR_Algo_Client::currentTimeInMillis(time_t timeInMillis) {
 	std::string timeString;
 	auto tp = std::chrono::system_clock::time_point{ std::chrono::milliseconds{timeInMillis} };
 
@@ -687,65 +687,65 @@ void CWMR_Client::currentTimeInMillis(time_t timeInMillis) {
 }
 
 #if !defined(USE_WIN_DLL)
-[[maybe_unused]] void CWMR_Client::execDetailsProtoBuf([[maybe_unused]] const protobuf::ExecutionDetails& executionDetails) {}
-[[maybe_unused]] void CWMR_Client::execDetailsEndProtoBuf([[maybe_unused]] const protobuf::ExecutionDetailsEnd& executionDetailsEndProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::execDetailsProtoBuf([[maybe_unused]] const protobuf::ExecutionDetails& executionDetails) {}
+[[maybe_unused]] void IBKR_Algo_Client::execDetailsEndProtoBuf([[maybe_unused]] const protobuf::ExecutionDetailsEnd& executionDetailsEndProto) {}
 
-void CWMR_Client::orderStatusProtoBuf(const protobuf::OrderStatus& orderStatusProto) {
+void IBKR_Algo_Client::orderStatusProtoBuf(const protobuf::OrderStatus& orderStatusProto) {
 	std::println("Order Status: {}", orderStatusProto.ShortDebugString());
 }
 
-void CWMR_Client::openOrderProtoBuf(const protobuf::OpenOrder& openOrderProto) {
+void IBKR_Algo_Client::openOrderProtoBuf(const protobuf::OpenOrder& openOrderProto) {
 	std::println("Open Order: {}", openOrderProto.ShortDebugString());
 }
 
-void CWMR_Client::openOrdersEndProtoBuf(const protobuf::OpenOrdersEnd& openOrderEndProto) {
+void IBKR_Algo_Client::openOrdersEndProtoBuf(const protobuf::OpenOrdersEnd& openOrderEndProto) {
 	std::println("Open Order End: {}", openOrderEndProto.ShortDebugString());
 }
 
-[[maybe_unused]] void CWMR_Client::errorProtoBuf([[maybe_unused]] const protobuf::ErrorMessage& errorProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::errorProtoBuf([[maybe_unused]] const protobuf::ErrorMessage& errorProto) {}
 
-void CWMR_Client::completedOrderProtoBuf(const protobuf::CompletedOrder& completedOrderProto) {
+void IBKR_Algo_Client::completedOrderProtoBuf(const protobuf::CompletedOrder& completedOrderProto) {
 	std::println("Completed Order: {}", completedOrderProto.ShortDebugString());
 }
 
-void CWMR_Client::completedOrdersEndProtoBuf(const protobuf::CompletedOrdersEnd& completedOrdersEndProto) {
+void IBKR_Algo_Client::completedOrdersEndProtoBuf(const protobuf::CompletedOrdersEnd& completedOrdersEndProto) {
 	std::println("Completed Orders End: {}", completedOrdersEndProto.ShortDebugString());
 }
 
-[[maybe_unused]] void CWMR_Client::orderBoundProtoBuf([[maybe_unused]] const protobuf::OrderBound& orderBoundProto) {}
-[[maybe_unused]] void CWMR_Client::contractDataEndProtoBuf([[maybe_unused]] const protobuf::ContractDataEnd& contractDataProto) {}
-[[maybe_unused]] void CWMR_Client::bondContractDataProtoBuf([[maybe_unused]] const protobuf::ContractData& contractDataProto) {}
-[[maybe_unused]] void CWMR_Client::contractDataProtoBuf([[maybe_unused]] const protobuf::ContractData& contractDataProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::orderBoundProtoBuf([[maybe_unused]] const protobuf::OrderBound& orderBoundProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::contractDataEndProtoBuf([[maybe_unused]] const protobuf::ContractDataEnd& contractDataProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::bondContractDataProtoBuf([[maybe_unused]] const protobuf::ContractData& contractDataProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::contractDataProtoBuf([[maybe_unused]] const protobuf::ContractData& contractDataProto) {}
 
-void CWMR_Client::tickPriceProtoBuf(const protobuf::TickPrice& tickPriceProto) {
+void IBKR_Algo_Client::tickPriceProtoBuf(const protobuf::TickPrice& tickPriceProto) {
 	std::println("Tick Price: {}", tickPriceProto.ShortDebugString());
 }
 
-void CWMR_Client::tickSizeProtoBuf(const protobuf::TickSize& tickSizeProto) {
+void IBKR_Algo_Client::tickSizeProtoBuf(const protobuf::TickSize& tickSizeProto) {
 	std::println("Tick Size: {}", tickSizeProto.ShortDebugString());
 }
 
-void CWMR_Client::tickOptionComputationProtoBuf(const protobuf::TickOptionComputation& tickOptionComputationProto) {
+void IBKR_Algo_Client::tickOptionComputationProtoBuf(const protobuf::TickOptionComputation& tickOptionComputationProto) {
 	std::println("Tick Option Computation: {}", tickOptionComputationProto.ShortDebugString());
 }
 
-void CWMR_Client::tickGenericProtoBuf(const protobuf::TickGeneric& tickGenericProto) {
+void IBKR_Algo_Client::tickGenericProtoBuf(const protobuf::TickGeneric& tickGenericProto) {
 	std::println("Tick Generic: {}", tickGenericProto.ShortDebugString());
 }
 
-void CWMR_Client::tickStringProtoBuf(const protobuf::TickString& tickStringProto) {
+void IBKR_Algo_Client::tickStringProtoBuf(const protobuf::TickString& tickStringProto) {
 	std::println("Tick String: {}", tickStringProto.ShortDebugString());
 }
 
-void CWMR_Client::tickSnapshotEndProtoBuf(const protobuf::TickSnapshotEnd& tickSnapshotEndProto) {
+void IBKR_Algo_Client::tickSnapshotEndProtoBuf(const protobuf::TickSnapshotEnd& tickSnapshotEndProto) {
 	std::println("Tick Snapshot End: {}", tickSnapshotEndProto.ShortDebugString());
 }
 
-[[maybe_unused]] void CWMR_Client::updateMarketDepthProtoBuf([[maybe_unused]] const protobuf::MarketDepth& marketDepthProto) {}
-[[maybe_unused]] void CWMR_Client::updateMarketDepthL2ProtoBuf([[maybe_unused]] const protobuf::MarketDepthL2& marketDepthL2Proto) {}
-[[maybe_unused]] void CWMR_Client::marketDataTypeProtoBuf([[maybe_unused]] const protobuf::MarketDataType& marketDataTypeProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::updateMarketDepthProtoBuf([[maybe_unused]] const protobuf::MarketDepth& marketDepthProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::updateMarketDepthL2ProtoBuf([[maybe_unused]] const protobuf::MarketDepthL2& marketDepthL2Proto) {}
+[[maybe_unused]] void IBKR_Algo_Client::marketDataTypeProtoBuf([[maybe_unused]] const protobuf::MarketDataType& marketDataTypeProto) {}
 
-void CWMR_Client::tickReqParamsProtoBuf(const protobuf::TickReqParams& tickReqParamsProto) {
+void IBKR_Algo_Client::tickReqParamsProtoBuf(const protobuf::TickReqParams& tickReqParamsProto) {
 	std::string out;
 
 	auto append = [&out](std::string_view label, const auto& value) {
@@ -766,78 +766,78 @@ void CWMR_Client::tickReqParamsProtoBuf(const protobuf::TickReqParams& tickReqPa
 	std::println("Tick Req Params: {}", out);
 }
 
-[[maybe_unused]] void CWMR_Client::updateAccountValueProtoBuf([[maybe_unused]] const protobuf::AccountValue& accountValueProto) {}
-[[maybe_unused]] void CWMR_Client::updatePortfolioProtoBuf([[maybe_unused]] const protobuf::PortfolioValue& portfolioValueProto) {}
-[[maybe_unused]] void CWMR_Client::updateAccountTimeProtoBuf([[maybe_unused]] const protobuf::AccountUpdateTime& accountTimeProto) {}
-[[maybe_unused]] void CWMR_Client::accountDataEndProtoBuf([[maybe_unused]] const protobuf::AccountDataEnd& accountDownloadEndProto) {}
-[[maybe_unused]] void CWMR_Client::managedAccountsProtoBuf([[maybe_unused]] const protobuf::ManagedAccounts& managedAccountsProto) {}
-[[maybe_unused]] void CWMR_Client::positionProtoBuf([[maybe_unused]] const protobuf::Position& positionProto) {}
-[[maybe_unused]] void CWMR_Client::positionEndProtoBuf([[maybe_unused]] const protobuf::PositionEnd& positionEndProto) {}
-[[maybe_unused]] void CWMR_Client::accountSummaryProtoBuf([[maybe_unused]] const protobuf::AccountSummary& accountSummaryProto) {}
-[[maybe_unused]] void CWMR_Client::accountSummaryEndProtoBuf([[maybe_unused]] const protobuf::AccountSummaryEnd& accountSummaryEndProto) {}
-[[maybe_unused]] void CWMR_Client::positionMultiProtoBuf([[maybe_unused]] const protobuf::PositionMulti& positionMultiProto) {}
-[[maybe_unused]] void CWMR_Client::positionMultiEndProtoBuf([[maybe_unused]] const protobuf::PositionMultiEnd& positionMultiEndProto) {}
-[[maybe_unused]] void CWMR_Client::accountUpdateMultiProtoBuf([[maybe_unused]] const protobuf::AccountUpdateMulti& accountUpdateMultiProto) {}
-[[maybe_unused]] void CWMR_Client::accountUpdateMultiEndProtoBuf([[maybe_unused]] const protobuf::AccountUpdateMultiEnd& accountUpdateMultiEndProto) {}
-[[maybe_unused]] void CWMR_Client::historicalDataProtoBuf([[maybe_unused]] const protobuf::HistoricalData& historicalDataProto) {}
-[[maybe_unused]] void CWMR_Client::historicalDataUpdateProtoBuf([[maybe_unused]] const protobuf::HistoricalDataUpdate& historicalDataUpdateProto) {}
-[[maybe_unused]] void CWMR_Client::historicalDataEndProtoBuf([[maybe_unused]] const protobuf::HistoricalDataEnd& historicalDataEndProto) {}
-[[maybe_unused]] void CWMR_Client::realTimeBarTickProtoBuf([[maybe_unused]] const protobuf::RealTimeBarTick& realTimeBarTickProto) {}
-[[maybe_unused]] void CWMR_Client::headTimestampProtoBuf([[maybe_unused]] const protobuf::HeadTimestamp& headTimestampProto) {}
-[[maybe_unused]] void CWMR_Client::histogramDataProtoBuf([[maybe_unused]] const protobuf::HistogramData& histogramDataProto) {}
-[[maybe_unused]] void CWMR_Client::historicalTicksProtoBuf([[maybe_unused]] const protobuf::HistoricalTicks& historicalTicksProto) {}
-[[maybe_unused]] void CWMR_Client::historicalTicksBidAskProtoBuf([[maybe_unused]] const protobuf::HistoricalTicksBidAsk& historicalTicksBidAskProto) {}
-[[maybe_unused]] void CWMR_Client::historicalTicksLastProtoBuf([[maybe_unused]] const protobuf::HistoricalTicksLast& historicalTicksLastProto) {}
-[[maybe_unused]] void CWMR_Client::tickByTickDataProtoBuf([[maybe_unused]] const protobuf::TickByTickData& tickByTickDataProto) {}
-[[maybe_unused]] void CWMR_Client::updateNewsBulletinProtoBuf([[maybe_unused]] const protobuf::NewsBulletin& newsBulletinProto) {}
-[[maybe_unused]] void CWMR_Client::newsArticleProtoBuf([[maybe_unused]] const protobuf::NewsArticle& newsArticleProto) {}
-[[maybe_unused]] void CWMR_Client::newsProvidersProtoBuf([[maybe_unused]] const protobuf::NewsProviders& newsProvidersProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::updateAccountValueProtoBuf([[maybe_unused]] const protobuf::AccountValue& accountValueProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::updatePortfolioProtoBuf([[maybe_unused]] const protobuf::PortfolioValue& portfolioValueProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::updateAccountTimeProtoBuf([[maybe_unused]] const protobuf::AccountUpdateTime& accountTimeProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::accountDataEndProtoBuf([[maybe_unused]] const protobuf::AccountDataEnd& accountDownloadEndProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::managedAccountsProtoBuf([[maybe_unused]] const protobuf::ManagedAccounts& managedAccountsProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::positionProtoBuf([[maybe_unused]] const protobuf::Position& positionProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::positionEndProtoBuf([[maybe_unused]] const protobuf::PositionEnd& positionEndProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::accountSummaryProtoBuf([[maybe_unused]] const protobuf::AccountSummary& accountSummaryProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::accountSummaryEndProtoBuf([[maybe_unused]] const protobuf::AccountSummaryEnd& accountSummaryEndProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::positionMultiProtoBuf([[maybe_unused]] const protobuf::PositionMulti& positionMultiProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::positionMultiEndProtoBuf([[maybe_unused]] const protobuf::PositionMultiEnd& positionMultiEndProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::accountUpdateMultiProtoBuf([[maybe_unused]] const protobuf::AccountUpdateMulti& accountUpdateMultiProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::accountUpdateMultiEndProtoBuf([[maybe_unused]] const protobuf::AccountUpdateMultiEnd& accountUpdateMultiEndProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::historicalDataProtoBuf([[maybe_unused]] const protobuf::HistoricalData& historicalDataProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::historicalDataUpdateProtoBuf([[maybe_unused]] const protobuf::HistoricalDataUpdate& historicalDataUpdateProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::historicalDataEndProtoBuf([[maybe_unused]] const protobuf::HistoricalDataEnd& historicalDataEndProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::realTimeBarTickProtoBuf([[maybe_unused]] const protobuf::RealTimeBarTick& realTimeBarTickProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::headTimestampProtoBuf([[maybe_unused]] const protobuf::HeadTimestamp& headTimestampProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::histogramDataProtoBuf([[maybe_unused]] const protobuf::HistogramData& histogramDataProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::historicalTicksProtoBuf([[maybe_unused]] const protobuf::HistoricalTicks& historicalTicksProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::historicalTicksBidAskProtoBuf([[maybe_unused]] const protobuf::HistoricalTicksBidAsk& historicalTicksBidAskProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::historicalTicksLastProtoBuf([[maybe_unused]] const protobuf::HistoricalTicksLast& historicalTicksLastProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::tickByTickDataProtoBuf([[maybe_unused]] const protobuf::TickByTickData& tickByTickDataProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::updateNewsBulletinProtoBuf([[maybe_unused]] const protobuf::NewsBulletin& newsBulletinProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::newsArticleProtoBuf([[maybe_unused]] const protobuf::NewsArticle& newsArticleProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::newsProvidersProtoBuf([[maybe_unused]] const protobuf::NewsProviders& newsProvidersProto) {}
 
-void CWMR_Client::historicalNewsProtoBuf(const protobuf::HistoricalNews& historicalNewsProto) {
+void IBKR_Algo_Client::historicalNewsProtoBuf(const protobuf::HistoricalNews& historicalNewsProto) {
 	std::println("Historical News: {}", historicalNewsProto.ShortDebugString());
 }
 
-void CWMR_Client::historicalNewsEndProtoBuf(const protobuf::HistoricalNewsEnd& historicalNewsEndProto) {
+void IBKR_Algo_Client::historicalNewsEndProtoBuf(const protobuf::HistoricalNewsEnd& historicalNewsEndProto) {
 	std::println("Historical News End: {}", historicalNewsEndProto.ShortDebugString());
 }
 
-[[maybe_unused]] void CWMR_Client::wshMetaDataProtoBuf([[maybe_unused]] const protobuf::WshMetaData& wshMetaDataProto) {}
-[[maybe_unused]] void CWMR_Client::wshEventDataProtoBuf([[maybe_unused]] const protobuf::WshEventData& wshEventDataProto) {}
-[[maybe_unused]] void CWMR_Client::tickNewsProtoBuf([[maybe_unused]] const protobuf::TickNews& tickNewsProto) {}
-[[maybe_unused]] void CWMR_Client::scannerParametersProtoBuf([[maybe_unused]] const protobuf::ScannerParameters& scannerParametersProto) {}
-[[maybe_unused]] void CWMR_Client::fundamentalsDataProtoBuf([[maybe_unused]] const protobuf::FundamentalsData& fundamentalsDataProto) {}
-[[maybe_unused]] void CWMR_Client::scannerDataProtoBuf([[maybe_unused]] const protobuf::ScannerData& scannerDataProto) {}
-[[maybe_unused]] void CWMR_Client::pnlProtoBuf([[maybe_unused]] const protobuf::PnL& pnlProto) {}
-[[maybe_unused]] void CWMR_Client::pnlSingleProtoBuf([[maybe_unused]] const protobuf::PnLSingle& pnlSingleProto) {}
-[[maybe_unused]] void CWMR_Client::receiveFAProtoBuf([[maybe_unused]] const protobuf::ReceiveFA& receiveFAProto) {}
-[[maybe_unused]] void CWMR_Client::replaceFAEndProtoBuf([[maybe_unused]] const protobuf::ReplaceFAEnd& replaceFAEndProto) {}
-[[maybe_unused]] void CWMR_Client::commissionAndFeesReportProtoBuf([[maybe_unused]] const protobuf::CommissionAndFeesReport& commissionAndFeesReportProto) {}
-[[maybe_unused]] void CWMR_Client::historicalScheduleProtoBuf([[maybe_unused]] const protobuf::HistoricalSchedule& historicalScheduleProto) {}
-[[maybe_unused]] void CWMR_Client::rerouteMarketDataRequestProtoBuf([[maybe_unused]] const protobuf::RerouteMarketDataRequest& rerouteMarketDataRequestProto) {}
-[[maybe_unused]] void CWMR_Client::rerouteMarketDepthRequestProtoBuf([[maybe_unused]] const protobuf::RerouteMarketDepthRequest& rerouteMarketDepthRequestProto) {}
-[[maybe_unused]] void CWMR_Client::secDefOptParameterProtoBuf([[maybe_unused]] const protobuf::SecDefOptParameter& secDefOptParameterProto) {}
-[[maybe_unused]] void CWMR_Client::secDefOptParameterEndProtoBuf([[maybe_unused]] const protobuf::SecDefOptParameterEnd& secDefOptParameterEndProto) {}
-[[maybe_unused]] void CWMR_Client::softDollarTiersProtoBuf([[maybe_unused]] const protobuf::SoftDollarTiers& softDollarTiersProto) {}
-[[maybe_unused]] void CWMR_Client::familyCodesProtoBuf([[maybe_unused]] const protobuf::FamilyCodes& familyCodesProto) {}
-[[maybe_unused]] void CWMR_Client::symbolSamplesProtoBuf([[maybe_unused]] const protobuf::SymbolSamples& symbolSamplesProto) {}
-[[maybe_unused]] void CWMR_Client::smartComponentsProtoBuf([[maybe_unused]] const protobuf::SmartComponents& smartComponentsProto) {}
-[[maybe_unused]] void CWMR_Client::marketRuleProtoBuf([[maybe_unused]] const protobuf::MarketRule& marketRuleProto) {}
-[[maybe_unused]] void CWMR_Client::userInfoProtoBuf([[maybe_unused]] const protobuf::UserInfo& userInfoProto) {}
-[[maybe_unused]] void CWMR_Client::nextValidIdProtoBuf([[maybe_unused]] const protobuf::NextValidId& nextValidIdProto) {}
-[[maybe_unused]] void CWMR_Client::currentTimeProtoBuf([[maybe_unused]] const protobuf::CurrentTime& currentTimeProto) {}
-[[maybe_unused]] void CWMR_Client::currentTimeInMillisProtoBuf([[maybe_unused]] const protobuf::CurrentTimeInMillis& currentTimeInMillisProto) {}
-[[maybe_unused]] void CWMR_Client::verifyMessageApiProtoBuf([[maybe_unused]] const protobuf::VerifyMessageApi& verifyMessageApiProto) {}
-[[maybe_unused]] void CWMR_Client::verifyCompletedProtoBuf([[maybe_unused]] const protobuf::VerifyCompleted& verifyCompletedProto) {}
-[[maybe_unused]] void CWMR_Client::displayGroupListProtoBuf([[maybe_unused]] const protobuf::DisplayGroupList& displayGroupListProto) {}
-[[maybe_unused]] void CWMR_Client::displayGroupUpdatedProtoBuf([[maybe_unused]] const protobuf::DisplayGroupUpdated& displayGroupUpdatedProto) {}
-[[maybe_unused]] void CWMR_Client::marketDepthExchangesProtoBuf([[maybe_unused]] const protobuf::MarketDepthExchanges& marketDepthExchangesProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::wshMetaDataProtoBuf([[maybe_unused]] const protobuf::WshMetaData& wshMetaDataProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::wshEventDataProtoBuf([[maybe_unused]] const protobuf::WshEventData& wshEventDataProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::tickNewsProtoBuf([[maybe_unused]] const protobuf::TickNews& tickNewsProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::scannerParametersProtoBuf([[maybe_unused]] const protobuf::ScannerParameters& scannerParametersProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::fundamentalsDataProtoBuf([[maybe_unused]] const protobuf::FundamentalsData& fundamentalsDataProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::scannerDataProtoBuf([[maybe_unused]] const protobuf::ScannerData& scannerDataProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::pnlProtoBuf([[maybe_unused]] const protobuf::PnL& pnlProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::pnlSingleProtoBuf([[maybe_unused]] const protobuf::PnLSingle& pnlSingleProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::receiveFAProtoBuf([[maybe_unused]] const protobuf::ReceiveFA& receiveFAProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::replaceFAEndProtoBuf([[maybe_unused]] const protobuf::ReplaceFAEnd& replaceFAEndProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::commissionAndFeesReportProtoBuf([[maybe_unused]] const protobuf::CommissionAndFeesReport& commissionAndFeesReportProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::historicalScheduleProtoBuf([[maybe_unused]] const protobuf::HistoricalSchedule& historicalScheduleProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::rerouteMarketDataRequestProtoBuf([[maybe_unused]] const protobuf::RerouteMarketDataRequest& rerouteMarketDataRequestProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::rerouteMarketDepthRequestProtoBuf([[maybe_unused]] const protobuf::RerouteMarketDepthRequest& rerouteMarketDepthRequestProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::secDefOptParameterProtoBuf([[maybe_unused]] const protobuf::SecDefOptParameter& secDefOptParameterProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::secDefOptParameterEndProtoBuf([[maybe_unused]] const protobuf::SecDefOptParameterEnd& secDefOptParameterEndProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::softDollarTiersProtoBuf([[maybe_unused]] const protobuf::SoftDollarTiers& softDollarTiersProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::familyCodesProtoBuf([[maybe_unused]] const protobuf::FamilyCodes& familyCodesProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::symbolSamplesProtoBuf([[maybe_unused]] const protobuf::SymbolSamples& symbolSamplesProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::smartComponentsProtoBuf([[maybe_unused]] const protobuf::SmartComponents& smartComponentsProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::marketRuleProtoBuf([[maybe_unused]] const protobuf::MarketRule& marketRuleProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::userInfoProtoBuf([[maybe_unused]] const protobuf::UserInfo& userInfoProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::nextValidIdProtoBuf([[maybe_unused]] const protobuf::NextValidId& nextValidIdProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::currentTimeProtoBuf([[maybe_unused]] const protobuf::CurrentTime& currentTimeProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::currentTimeInMillisProtoBuf([[maybe_unused]] const protobuf::CurrentTimeInMillis& currentTimeInMillisProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::verifyMessageApiProtoBuf([[maybe_unused]] const protobuf::VerifyMessageApi& verifyMessageApiProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::verifyCompletedProtoBuf([[maybe_unused]] const protobuf::VerifyCompleted& verifyCompletedProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::displayGroupListProtoBuf([[maybe_unused]] const protobuf::DisplayGroupList& displayGroupListProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::displayGroupUpdatedProtoBuf([[maybe_unused]] const protobuf::DisplayGroupUpdated& displayGroupUpdatedProto) {}
+[[maybe_unused]] void IBKR_Algo_Client::marketDepthExchangesProtoBuf([[maybe_unused]] const protobuf::MarketDepthExchanges& marketDepthExchangesProto) {}
 
-void CWMR_Client::configResponseProtoBuf(const protobuf::ConfigResponse& configResponseProto) {
+void IBKR_Algo_Client::configResponseProtoBuf(const protobuf::ConfigResponse& configResponseProto) {
 	std::println("==== Config Response Begin ====");
 	std::println("{}", configResponseProto.ShortDebugString());
 	std::println("==== Config Response End ====");
 }
-void CWMR_Client::updateConfigResponseProtoBuf(const protobuf::UpdateConfigResponse& updateConfigResponseProto) {
+void IBKR_Algo_Client::updateConfigResponseProtoBuf(const protobuf::UpdateConfigResponse& updateConfigResponseProto) {
 	std::println("==== Update Config Response Begin ====");
 	std::println("{}", updateConfigResponseProto.ShortDebugString());
 	std::println("==== Update Config Response End ====");
@@ -846,7 +846,7 @@ void CWMR_Client::updateConfigResponseProtoBuf(const protobuf::UpdateConfigRespo
 #endif
 
 
-void CWMR_Client::printContractMsg(const Contract& contract) {
+void IBKR_Algo_Client::printContractMsg(const Contract& contract) {
 	std::println("\tContractId: {}", contract.conId);
 	std::println("\tSymbol: {}", contract.symbol);
 	std::println("\tSecType: {}", contract.secType);
@@ -862,7 +862,7 @@ void CWMR_Client::printContractMsg(const Contract& contract) {
 	std::println("\tTradingClass: {}", contract.tradingClass);
 }
 
-void CWMR_Client::printContractDetailsMsg(const ContractDetails& contractDetails) {
+void IBKR_Algo_Client::printContractDetailsMsg(const ContractDetails& contractDetails) {
 	std::println("\tMarketName: {}", contractDetails.marketName);
 	std::println("\tMinTick: {}", Utility::doubleMaxString(contractDetails.minTick));
 	std::println("\tPriceMagnifier: {}", Utility::intMaxString(contractDetails.priceMagnifier));
@@ -919,7 +919,7 @@ void CWMR_Client::printContractDetailsMsg(const ContractDetails& contractDetails
 	printContractDetailsIneligibilityReasonList(contractDetails.ineligibilityReasonList);
 }
 
-void CWMR_Client::printContractDetailsSecIdList(const TagValueListSPtr& secIdList) {
+void IBKR_Algo_Client::printContractDetailsSecIdList(const TagValueListSPtr& secIdList) {
 	if (secIdList) {
 		std::println("\tSecIdList: {{");
 		for (const auto& tag : *secIdList) {
@@ -930,7 +930,7 @@ void CWMR_Client::printContractDetailsSecIdList(const TagValueListSPtr& secIdLis
 }
 
 
-void CWMR_Client::printContractDetailsIneligibilityReasonList(const IneligibilityReasonListSPtr& ineligibilityReasonList) {
+void IBKR_Algo_Client::printContractDetailsIneligibilityReasonList(const IneligibilityReasonListSPtr& ineligibilityReasonList) {
 	if (ineligibilityReasonList) {
 		std::println("\tIneligibilityReasonList: {{");
 		for (const auto& reason : *ineligibilityReasonList) {
@@ -940,7 +940,7 @@ void CWMR_Client::printContractDetailsIneligibilityReasonList(const Ineligibilit
 	}
 }
 
-void CWMR_Client::printBondContractDetailsMsg(const ContractDetails& contractDetails) {
+void IBKR_Algo_Client::printBondContractDetailsMsg(const ContractDetails& contractDetails) {
 	std::println("\tSymbol: {}", contractDetails.contract.symbol);
 	std::println("\tSecType: {}", contractDetails.contract.secType);
 	std::println("\tCusip: {}", contractDetails.cusip);
@@ -982,7 +982,7 @@ void CWMR_Client::printBondContractDetailsMsg(const ContractDetails& contractDet
 	printContractDetailsSecIdList(contractDetails.secIdList);
 }
 
-void CWMR_Client::printSoftDollarTier(const SoftDollarTier& softDollarTier) {
+void IBKR_Algo_Client::printSoftDollarTier(const SoftDollarTier& softDollarTier) {
 	std::println("\tSoftDollarTier - Name={}, Value={}, DisplayName={}", 
 		softDollarTier.name(), softDollarTier.val(), softDollarTier.displayName());
 }
