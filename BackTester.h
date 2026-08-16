@@ -11,4 +11,8 @@ public:
 		SMA sma,
 		std::function<void(SMA)> callback
 	);
+	void retrieveDatabaseData();
+
+	template <typename T>
+	T readCSV(const std::string& filename, const int columnCount);
 };

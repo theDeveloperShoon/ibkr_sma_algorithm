@@ -16,6 +16,8 @@
 #include <print>
 #include <thread>
 
+#include <cpr/cpr.h>
+
 using namespace std;
 
 const unsigned MAX_ATTEMPTS = 50;
@@ -26,9 +28,21 @@ int main()
 	SMA sma(0.01);
 
 	BackTester_SMA backTester;
-	backTester.runTest(sma, [](SMA sma) {
-		// Callback function logic here
-	});
+	//backTester.runTest(sma, [](SMA sma) {
+	//	sma(sma, 1.0, 2.0);
+	//	// Callback function logic here
+	//});
+
+	//cpr::Response r = cpr::Get(cpr::Url{ "https://epic-clinking-curliness.ngrok-free.dev/users" });
+
+	//if (r.status_code == 200)
+	//{
+	//	std::println("Successfully sent request to the server. Status code: {}", r.status_code);
+	//}
+	//else
+	//{
+	//	std::println("Failed to send request to the server. Status code: {}", r.status_code);
+	//}
 
 	return 0;
 	//int clientId = 0;
