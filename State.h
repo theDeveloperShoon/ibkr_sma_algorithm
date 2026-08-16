@@ -1,3 +1,6 @@
+#pragma once
+#ifndef STATE_H
+
 enum STATE
 {
 	BUY,
@@ -6,3 +9,7 @@ enum STATE
 	SELLING,
 	NONE
 };
+
+#endif // !STATE_H
+
+

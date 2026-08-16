@@ -1,3 +1,6 @@
+#pragma once
+#ifndef SMA_H
+
 #include "State.h"
 
 class SMA
@@ -16,3 +19,6 @@ private:
 	double m_theta;
 	STATE m_state;
 };
+
+#endif // !SMA_H
+
