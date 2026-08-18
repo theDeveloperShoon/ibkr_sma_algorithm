@@ -21,8 +21,10 @@ void BackTester_SMA::retrieveDatabaseData() {
 }
 
 // TEST: filename = "VOO_1d_data.csv", columnCount = 7
-template <typename T>
-T BackTester_SMA::readCSV(const std::string& filename, const int columnCount) {
-	// Read data from a CSV file for backtesting
-	//glz::read_csv<glz::colwise>(/*filename, columnCount*/);
-}
+//template <typename T>
+//T BackTester_SMA::readCSV(T returnObject, const std::string& filename, const int columnCount) {
+//	glz::read_csv<glz::colwise>(returnObject, filename);
+//	return returnObject;
+//	// Read data from a CSV file for backtesting
+//	//glz::read_csv<glz::colwise>(/*filename, columnCount*/);
+//}

@@ -14,5 +14,15 @@ public:
 	void retrieveDatabaseData();
 
 	template <typename T>
-	T readCSV(const std::string& filename, const int columnCount);
+	void readCSV(T& returnObject, const std::string& filename, const int columnCount);
 };
+
+#include "glaze/glaze.hpp"
+
+template <typename T>
+void BackTester_SMA::readCSV(T& returnObject, const std::string& filename, const int columnCount) {
+
+	glz::read_csv<glz::colwise>(returnObject, filename);
+	// Read data from a CSV file for backtesting
+	//glz::read_csv<glz::colwise>(/*filename, columnCount*/);
+}
