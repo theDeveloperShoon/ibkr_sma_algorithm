@@ -62,6 +62,9 @@ target_link_libraries(IBKR_SMA_ALGORITHM PRIVATE ibkr_twsapi)
 
 set_target_properties(IBKR_SMA_ALGORITHM PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
+target_compile_definitions(IBKR_SMA_ALGORITHM PRIVATE 
+	CSV_DIRECTORY="${CMAKE_CURRENT_SOURCE_DIR}"
+)
 # Include Directories and Link Libraries
 #target_include_directories(IBKR_SMA_ALGORITHM SYSTEM
 #	PUBLIC 
