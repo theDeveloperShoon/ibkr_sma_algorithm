@@ -2,6 +2,7 @@
 #include "SMA.h"
 
 #include <functional>
+#include <string>
 
 class BackTester_SMA {
 public:
@@ -20,9 +21,14 @@ public:
 #include "glaze/glaze.hpp"
 
 template <typename T>
-void BackTester_SMA::readCSV(T& returnObject, const std::string& filename, const int columnCount) {
+void BackTester_SMA::readCSV(T& returnObject, const std::string& filename, [[maybe_unused]] const int columnCount) {
+	std::string buffer{};
+	auto ec = glz::read_file_csv<glz::colwise>(returnObject, filename, buffer);
 
-	glz::read_csv<glz::colwise>(returnObject, filename);
+	//if (!ec) {
+	//	std::println("CSV file read successfully: {}", filename);
+	//}
+
 	// Read data from a CSV file for backtesting
 	//glz::read_csv<glz::colwise>(/*filename, columnCount*/);
-}
+} 
