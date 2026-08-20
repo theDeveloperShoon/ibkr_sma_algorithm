@@ -44,9 +44,11 @@ int main()
 	std::println("Reading CSV file: {}", CSV_DIRECTORY "/VOO_1d_data.csv");
 	backTester.readCSV(data, CSV_DIRECTORY "/VOO_1d_data.csv", 7);
 
-	for (const std::string& date : data.Date) {
-		std::println("Date: {}", date);
-	}
+	//for (const std::string& date : data.Date) {
+	//	std::println("Date: {}", date);
+	//}
+
+
 	//backTester.runTest(sma, [](SMA sma) {
 	//	sma(sma, 1.0, 2.0);
 	//	// Callback function logic here
