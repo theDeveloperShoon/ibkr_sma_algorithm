@@ -11,8 +11,8 @@ public:
 	BackTester_SMA();
 	~BackTester_SMA();
 	void runTest(
-		SMA sma,
-		std::function<void(SMA)> callback
+		SMA& sma,
+		std::function<void(SMA&)> callback
 	);
 	void retrieveDatabaseData();
 

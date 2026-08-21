@@ -10,7 +10,7 @@ BackTester_SMA::~BackTester_SMA() {
 	// Destructor implementation
 }
 
-void BackTester_SMA::runTest(SMA sma, std::function<void(SMA)> callback) {
+void BackTester_SMA::runTest(SMA& sma, std::function<void(SMA&)> callback) {
 	// Run the backtest logic here
 	// For example, you can simulate some data and call the callback with the SMA object
 	callback(sma);
