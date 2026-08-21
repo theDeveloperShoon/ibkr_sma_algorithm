@@ -13,7 +13,24 @@ public:
 	void setTheta(double theta);
 
 	template <typename Self>
-	void operator()(Self& self, double shortMA, double longMA);
+	void operator()(this Self&& self, double shortMA, double longMA)
+	{
+		if (self.m_state == NONE)
+		{
+			if (shortMA > (longMA * (1.0 + self.m_theta)))
+			{
+				self.m_state = BUY;
+			}
+			else if (shortMA < (longMA * (1.0 - self.m_theta)))
+			{
+				self.m_state = SELL;
+			}
+			else
+			{
+				self.m_state = NONE;
+			}
+		}
+	}
 
 private:
 	double m_theta;
