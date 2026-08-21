@@ -15,6 +15,7 @@
 
 #include <print>
 #include <thread>
+#include <algorithm>
 
 #include <cpr/cpr.h>
 
@@ -33,6 +34,12 @@ struct csvData {
 	std::vector<std::string> Volume;
 };
 
+template<typename... Vectors>
+	requires (std::ranges::bidirectional_range<Vectors> && ...)
+void reverseAll(Vectors&... vecs) {
+	(std::ranges::reverse(vecs), ...);
+}
+
 int main()
 {
 	SMA sma(0.01);
@@ -44,15 +51,16 @@ int main()
 	std::println("Reading CSV file: {}", CSV_DIRECTORY "/VOO_1d_data.csv");
 	backTester.readCSV(data, CSV_DIRECTORY "/VOO_1d_data.csv", 7);
 
-	//for (const std::string& date : data.Date) {
-	//	std::println("Date: {}", date);
-	//}
+	reverseAll(data.Date, data.Open, data.High, data.Low, data.Close, data.AdjClose, data.Volume);
 
-
-	//backTester.runTest(sma, [](SMA sma) {
-	//	sma(sma, 1.0, 2.0);
-	//	// Callback function logic here
-	//});
+	backTester.runTest(sma, [&data](SMA& simpleMovingAverage) {
+		//for (const std::string& date : data.Date) {
+		//	std::println("Date: {}", date);
+		//}
+		
+		simpleMovingAverage(1.0, 2.0);
+		// Callback function logic here
+	});
 
 	//cpr::Response r = cpr::Get(cpr::Url{ "https://epic-clinking-curliness.ngrok-free.dev/users" });
 
