@@ -11,6 +11,7 @@ public:
 	~SMA();
 
 	void setTheta(double theta);
+	STATE getState() const;
 
 	template <typename Self>
 	void operator()(this Self&& self, double shortMA, double longMA)

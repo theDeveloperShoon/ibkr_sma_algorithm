@@ -17,3 +17,7 @@ void SMA::setTheta(double theta)
 	m_theta = theta;
 }
 
+STATE SMA::getState() const
+{
+	return m_state;
+}
