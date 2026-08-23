@@ -31,6 +31,14 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(glaze)
 
+FetchContent_Declare(
+	magic_enum
+	GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
+	GIT_TAG v0.9.7
+)
+
+FetchContent_MakeAvailable(magic_enum)
+
 
 set(TWSAPI_DIR "C:/TWS API/source/CppClient/client")
 
@@ -43,7 +51,7 @@ file(GLOB TWS_API_SOURCES
 add_library(ibkr_twsapi STATIC ${TWS_API_SOURCES}  "SMA.h" "SMA.cpp" "BackTester.h" "State.h")
 
 target_include_directories(ibkr_twsapi SYSTEM PUBLIC ${TWSAPI_DIR} ${TWSAPI_DIR}/protobuf)
-target_link_libraries(ibkr_twsapi PUBLIC protobuf::libprotobuf unofficial::intelrdfpmathlib::decimal128 Threads::Threads cpr::cpr glaze::glaze ws2_32)
+target_link_libraries(ibkr_twsapi PUBLIC protobuf::libprotobuf unofficial::intelrdfpmathlib::decimal128 Threads::Threads cpr::cpr glaze::glaze magic_enum::magic_enum ws2_32)
 
 if(MSVC)
 	target_compile_options(ibkr_twsapi PRIVATE /W3)
