@@ -17,13 +17,13 @@ public:
 	void retrieveDatabaseData();
 
 	template <typename T>
-	void readCSV(T& returnObject, const std::string& filename, const int columnCount);
+	void readCSV(T& returnObject, const std::string& filename);
 };
 
 #include "glaze/glaze.hpp"
 
 template <typename T>
-void BackTester_SMA::readCSV(T& returnObject, const std::string& filename, [[maybe_unused]] const int columnCount) {
+void BackTester_SMA::readCSV(T& returnObject, const std::string& filename) {
 	std::string buffer{};
 	auto ec = glz::read_file_csv<glz::colwise>(returnObject, filename, buffer);
 

@@ -27,6 +27,7 @@ using namespace std;
 
 const unsigned MAX_ATTEMPTS = 50;
 const unsigned SLEEP_TIME = 10; // milliseconds
+const std::string DATA_DIRECTORY = std::string(CSV_DIRECTORY) + "/LMT_history1.csv";
 
 struct csvData {
 	std::vector<std::string> Date;
@@ -58,12 +59,11 @@ int main()
 
 
 	csvData data;
-	//std::println("Reading CSV file: {}", CSV_DIRECTORY "/VOO_1d_data.csv");
-	//backTester.readCSV(data, CSV_DIRECTORY "/VOO_1d_data.csv", 7);
-	std::println("Reading CSV file: {}", CSV_DIRECTORY "/LMT_history1.csv");
-	backTester.readCSV(data, CSV_DIRECTORY "/LMT_history1.csv", 7);
 
-	//reverseAll(data.Date, data.Open, data.High, data.Low, data.Close, data.AdjClose, data.Volume);
+	std::println("Reading CSV file: {}", DATA_DIRECTORY);
+	backTester.readCSV(data, DATA_DIRECTORY);
+
+	reverseAll(data.Date, data.Open, data.High, data.Low, data.Close, data.AdjClose, data.Volume);
 	
 	double longSum = 0.0;
 	std::vector<double> longMAValues(data.Open.size()-50, 0.0);
@@ -120,7 +120,7 @@ int main()
 					purchase = { data.Date[i + 50], priceAShare, static_cast<int>(shares) };
 					capital -= priceAShare * shares;
 
-					std::println("[Purchase] Bought {} shares at ${} on Date: {} | Short MA: {}, Long MA: {}", shares, priceAShare, data.Date[i + 50], shortMA, longMA);
+					std::println("[Purchase] Bought {}  shares at ${} on Date: {} | Short MA: {}, Long MA: {}", shares, priceAShare, data.Date[i + 50], shortMA, longMA);
 				}
 				else if (simpleMovingAverage.getState() == SELL) {
 					if (purchase.shares > 0) {
