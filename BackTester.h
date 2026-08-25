@@ -18,6 +18,8 @@ public:
 
 	template <typename T>
 	void readCSV(T& returnObject, const std::string& filename);
+	void calculateMovingAverages(const std::vector<double>& data, std::size_t window, std::vector<double>& returnVector);
+	[[nodiscard]] std::vector<double> calculateMovingAverages(const std::vector<double>& data, std::size_t window);
 };
 
 #include "glaze/glaze.hpp"
