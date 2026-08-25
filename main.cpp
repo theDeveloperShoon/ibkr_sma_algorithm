@@ -60,24 +60,12 @@ int main()
 	std::println("Reading CSV file: {}", DATA_DIRECTORY);
 	backTester.readCSV(data, DATA_DIRECTORY);
 
-	reverseAll(data.Date, data.Open, data.High, data.Low, data.Close, data.AdjClose, data.Volume);
+	//reverseAll(data.Date, data.Open, data.High, data.Low, data.Close, data.AdjClose, data.Volume);
 	
-	double longSum = 0.0;
-	std::vector<double> longMAValues(data.Open.size()-50, 0.0);
+	std::vector<double> longMAValues(data.Open.size()-49, 0.0);
+	backTester.calculateMovingAverages(data.Open, 50, longMAValues);
 
-	for (auto [index,price] : std::views::enumerate(data.Open)) {
-		if (index > 49)
-		{
-			longMAValues[index - 50] = longSum / 50.0;
-			longSum -= data.Open[index - 50];
-			//double longMA = longSum / 50.0;
-			//double shortMA = std::accumulate(data.Open.begin() + index - 9, data.Open.begin() + index + 1, 0.0) / 10.0;
-			//sma(shortMA, longMA);
-		}
-		longSum += price;
-	}
-
-	std::vector<double> shortMAValues(data.Open.size() - 50, 0.0);
+	std::vector<double> shortMAValues(data.Open.size() - 49, 0.0);
 	double shortMA = 0.0;
 	for (auto [index, price] : std::views::enumerate(data.Open)) {
 		if (index > 49)
@@ -89,23 +77,13 @@ int main()
 
 	std::println("Long MA Size: {}, Short MA Size: {}", longMAValues.size(), shortMAValues.size());
 
-
-	//for (const auto& ma : longMAValues) {
-	//	std::println("Long MA: {}", ma);
-	//}
-
-
-
 	backTester.runTest(sma, [&data, &longMAValues, &shortMAValues](SMA& simpleMovingAverage) {
-		//for (const std::string& date : data.Date) {
-		//	std::println("Date: {}", date);
-		//}
 		STATE previousState = simpleMovingAverage.getState();
 		double capital = 10000.0;
 		purchaseData purchase = { "", 0.0, 0 };
 		
 
-		for (size_t i = 0; i < longMAValues.size(); ++i) {
+		for (size_t i = 0; i < longMAValues.size()-1; ++i) {
 			double longMA = longMAValues[i];
 			double shortMA = shortMAValues[i];
 			simpleMovingAverage(shortMA, longMA);
