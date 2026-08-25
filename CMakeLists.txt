@@ -1,6 +1,6 @@
 ﻿# CMakeList.txt : CMake project for IBKR_CMAKE_MEAN_REVERSION, include source and define
 # project specific logic here.
-#
+
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
@@ -10,6 +10,7 @@ endif()
 cmake_minimum_required (VERSION 3.25)
 project (IBKR_SMA_ALGORITHM LANGUAGES CXX)
 
+# Enforcingn mordern C++ standard
 set (CMAKE_CXX_STANDARD 23)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -88,10 +89,13 @@ target_compile_definitions(IBKR_SMA_ALGORITHM PRIVATE
 #		ws2_32
 #)
 
-if(MSVC)
-	target_compile_options(IBKR_SMA_ALGORITHM PRIVATE /Zc:preprocessor /W4 /WX)
-else()
-	target_compile_options(IBKR_SMA_ALGORITHM PRIVATE -Wall -Wextra -pedantic -Werror)
-endif()
+target_compile_options(IBKR_SMA_ALGORITHM PRIVATE
+	$<$<CXX_COMPILER_ID:MSVC>:
+		/Zc:preprocessor /W4 /WX
+	>
+	$<$<NOT:$<BOOL:${MSVC}>>:
+		-Wall -Wextra -pedantic -Werror
+	>
+)
 
 # TODO: Add tests and install targets if needed.
