@@ -77,37 +77,41 @@ int main()
 
 	std::println("Long MA Size: {}, Short MA Size: {}", longMAValues.size(), shortMAValues.size());
 
+	const std::size_t sizeDifference = data.Open.size() - longMAValues.size();
+	std::println("Size Difference: {}", sizeDifference);
+
 	backTester.runTest(sma, [&data, &longMAValues, &shortMAValues](SMA& simpleMovingAverage) {
 		STATE previousState = simpleMovingAverage.getState();
 		double capital = 10000.0;
 		purchaseData purchase = { "", 0.0, 0 };
 		
 
-		for (size_t i = 0; i < longMAValues.size()-1; ++i) {
+		for (size_t i = 0; i < longMAValues.size(); ++i) {
 			double longMA = longMAValues[i];
 			double shortMA = shortMAValues[i];
 			simpleMovingAverage(shortMA, longMA);
-			//std::println("State: {}", magic_enum::enum_name(simpleMovingAverage.getState()));
+
 			if (simpleMovingAverage.getState() != previousState) {
+				//std::println("State: {}", magic_enum::enum_name(simpleMovingAverage.getState()));
 				if(simpleMovingAverage.getState() == BUY) {
-					double priceAShare = data.Open[i + 50];
+					double priceAShare = data.Open[i + 49];
 					double shares = floor(capital / priceAShare);
-					purchase = { data.Date[i + 50], priceAShare, static_cast<int>(shares) };
+					purchase = { data.Date[i + 49], priceAShare, static_cast<int>(shares) };
 					capital -= priceAShare * shares;
 
-					std::println("[Purchase] Bought {}  shares at ${} on Date: {} | Short MA: {}, Long MA: {}", shares, priceAShare, data.Date[i + 50], shortMA, longMA);
-				}
-				else if (simpleMovingAverage.getState() == SELL) {
+					std::println("[Purchase] Bought {}  shares at ${} on Date: {} | Short MA: {}, Long MA: {}", shares, priceAShare, data.Date[i + 49], shortMA, longMA);
+				} else if (simpleMovingAverage.getState() == SELL) {
 					if (purchase.shares > 0) {
-						double priceAShare = data.Open[i + 50];
+						double priceAShare = data.Open[i + 49];
 						double value = (priceAShare) * purchase.shares;
 						capital += value;
-						std::println("[Sell] Sold {} shares at ${} on Date: {} | Short MA: {}, Long MA: {}", purchase.shares, data.Open[i + 50], data.Date[i + 50], shortMA, longMA);
+						std::println("[Sell] Sold {} shares at ${} on Date: {} | Short MA: {}, Long MA: {}", purchase.shares, data.Open[i + 49], data.Date[i + 49], shortMA, longMA);
 						purchase = { "", 0.0, 0 };
 					}
 				}
-
 			}
+
+			
 			previousState = simpleMovingAverage.getState();
 		}
 
