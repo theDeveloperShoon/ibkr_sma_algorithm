@@ -99,13 +99,19 @@ int main()
 					purchase = { data.Date[i + 49], priceAShare, static_cast<int>(shares) };
 					capital -= priceAShare * shares;
 
-					std::println("[Purchase] Bought {}  shares at ${} on Date: {} | Short MA: {}, Long MA: {}", shares, priceAShare, data.Date[i + 49], shortMA, longMA);
+					std::println(
+						"[Buy] Bought {}  shares at ${} on Date: {} | Short MA: {}, Long MA: {}", 
+						shares, priceAShare, data.Date[i + 49], shortMA, longMA
+					);
 				} else if (simpleMovingAverage.getState() == SELL) {
 					if (purchase.shares > 0) {
 						double priceAShare = data.Open[i + 49];
 						double value = (priceAShare) * purchase.shares;
 						capital += value;
-						std::println("[Sell] Sold {} shares at ${} on Date: {} | Short MA: {}, Long MA: {}", purchase.shares, data.Open[i + 49], data.Date[i + 49], shortMA, longMA);
+						std::println(
+							"[Sell] Sold {} shares at ${} on Date: {} | Short MA: {}, Long MA: {}", 
+							purchase.shares, data.Open[i + 49], data.Date[i + 49], shortMA, longMA
+						);
 						purchase = { "", 0.0, 0 };
 					}
 				}
