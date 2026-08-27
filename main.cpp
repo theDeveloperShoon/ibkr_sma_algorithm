@@ -53,25 +53,25 @@ void reverseAll(Vectors&... vecs) {
 
 int main()
 {
+	const size_t longWindow = 50;
+
 	SMA sma(0.01);
 	BackTester_SMA backTester;
 	csvData data;
 
 	std::println("Reading CSV file: {}", DATA_DIRECTORY);
 	backTester.readCSV(data, DATA_DIRECTORY);
-
-	//reverseAll(data.Date, data.Open, data.High, data.Low, data.Close, data.AdjClose, data.Volume);
 	
-	std::vector<double> longMAValues(data.Open.size()-49, 0.0);
-	backTester.calculateMovingAverages(data.Open, 50, longMAValues);
+	std::vector<double> longMAValues(data.Open.size()-longWindow+1, 0.0);
+	backTester.calculateMovingAverages(data.Open, longWindow, longMAValues);
 
-	std::vector<double> shortMAValues(data.Open.size() - 49, 0.0);
+	std::vector<double> shortMAValues(data.Open.size() - longWindow+1, 0.0);
 	double shortMA = 0.0;
 	for (auto [index, price] : std::views::enumerate(data.Open)) {
-		if (index > 49)
+		if (index > longWindow - 1)
 		{
 			shortMA = (price + data.Close[index - 1]) / 2.0;
-			shortMAValues[index - 50] = shortMA;
+			shortMAValues[index - longWindow] = shortMA;
 		}
 	}
 
@@ -116,8 +116,6 @@ int main()
 					}
 				}
 			}
-
-			
 			previousState = simpleMovingAverage.getState();
 		}
 
