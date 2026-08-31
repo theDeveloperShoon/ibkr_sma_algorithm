@@ -2,9 +2,8 @@
 # project specific logic here.
 
 # Enable Hot Reload for MSVC compilers if supported.
-if (POLICY CMP0141)
-  cmake_policy(SET CMP0141 NEW)
-  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+if(MSVC)
+  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>")
 endif()
 
 cmake_minimum_required (VERSION 3.25)
@@ -21,25 +20,8 @@ find_package (protobuf CONFIG REQUIRED)
 find_package (unofficial-intelrdfpmathlib CONFIG REQUIRED)
 find_package (Threads REQUIRED)
 find_package (cpr CONFIG REQUIRED)
-# find_package (fast-cpp-csv-parser CONFIG REQUIRED)
-
-FetchContent_Declare(
-  glaze
-  GIT_REPOSITORY https://github.com/stephenberry/glaze.git
-  GIT_TAG main
-  GIT_SHALLOW TRUE
-)
-
-FetchContent_MakeAvailable(glaze)
-
-FetchContent_Declare(
-	magic_enum
-	GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
-	GIT_TAG v0.9.7
-)
-
-FetchContent_MakeAvailable(magic_enum)
-
+find_package (glaze CONFIG REQUIRED)
+find_package (magic_enum CONFIG REQUIRED)
 
 set(TWSAPI_DIR "C:/TWS API/source/CppClient/client")
 
