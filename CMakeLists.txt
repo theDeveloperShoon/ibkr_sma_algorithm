@@ -23,61 +23,7 @@ find_package (cpr CONFIG REQUIRED)
 find_package (glaze CONFIG REQUIRED)
 find_package (magic_enum CONFIG REQUIRED)
 
-set(TWSAPI_DIR "C:/TWS API/source/CppClient/client")
-
-file(GLOB TWS_API_SOURCES 
-	"${TWSAPI_DIR}/*.cpp"
-	"${TWSAPI_DIR}/protobuf/*.cc"
-)
-
-#
-add_library(ibkr_twsapi STATIC ${TWS_API_SOURCES}  "SMA.h" "SMA.cpp" "BackTester.h" "State.h")
-
-target_include_directories(ibkr_twsapi SYSTEM PUBLIC ${TWSAPI_DIR} ${TWSAPI_DIR}/protobuf)
-target_link_libraries(ibkr_twsapi PUBLIC protobuf::libprotobuf unofficial::intelrdfpmathlib::decimal128 Threads::Threads cpr::cpr glaze::glaze magic_enum::magic_enum ws2_32)
-
-if(MSVC)
-	target_compile_options(ibkr_twsapi PRIVATE /W3)
-else()
-	target_compile_options(ibkr_twsapi PRIVATE -Wall -Wextra -pedantic -Werror)
-endif()
-
-# Add source to this project's executable.
-add_executable(IBKR_SMA_ALGORITHM
-	"main.cpp"
-	"main.h"
-#	${TWS_API_SOURCES}
-  "IBKR_Algo_Client.h" "IBKR_Algo_Client.cpp" "Utility.h" "Utility.cpp" "SMA.h" "SMA.cpp" "BackTester.h" "BackTester.cpp" "State.h")
-
-target_link_libraries(IBKR_SMA_ALGORITHM PRIVATE ibkr_twsapi)
-
-set_target_properties(IBKR_SMA_ALGORITHM PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-
-target_compile_definitions(IBKR_SMA_ALGORITHM PRIVATE 
-	CSV_DIRECTORY="${CMAKE_CURRENT_SOURCE_DIR}"
-)
-# Include Directories and Link Libraries
-#target_include_directories(IBKR_SMA_ALGORITHM SYSTEM
-#	PUBLIC 
-#		${TWSAPI_DIR}
-#		${TWSAPI_DIR}/protobuf
-#)
-
-#target_link_libraries(IBKR_SMA_ALGORITHM 
-#	PUBLIC 
-#		protobuf::libprotobuf 
-#		unofficial::intelrdfpmathlib::decimal128
-#		Threads::Threads
-#		ws2_32
-#)
-
-target_compile_options(IBKR_SMA_ALGORITHM PRIVATE
-	$<$<CXX_COMPILER_ID:MSVC>:
-		/Zc:preprocessor /W4 /WX
-	>
-	$<$<NOT:$<BOOL:${MSVC}>>:
-		-Wall -Wextra -pedantic -Werror
-	>
-)
+add_subdirectory(src)
+add_subdirectory(apps)
 
 # TODO: Add tests and install targets if needed.

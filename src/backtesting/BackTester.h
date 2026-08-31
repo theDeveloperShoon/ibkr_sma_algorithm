@@ -47,8 +47,7 @@ void BackTester_SMA::readCSV(T& returnObject, const std::string& filename, bool 
 			filename,
 			glz::format_error(ec, buffer)
 		);
-	}
-	else {
+	} else {
 		std::println("CSV file read successfully: {}", filename);
 	}
 
