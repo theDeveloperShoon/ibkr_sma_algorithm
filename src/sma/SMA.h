@@ -1,9 +1,11 @@
 #pragma once
 #ifndef SMA_H
 
+#include "MarketTick.hpp"
+#include "Algorithm.h"
 #include "State.h"
 
-class SMA
+class SMA : public Algorithm
 {
 public: 
 	SMA();
@@ -11,46 +13,23 @@ public:
 	~SMA();
 
 	void setTheta(double theta);
-	STATE getState() const;
+	[[nodiscard]] STATE getState() const override { return m_state; }
+	STATE update(const MarketTick& tick) override {
+		return m_state;
+	};
+	void reset() override;
 
 	template <typename Self>
 	void operator()(this Self&& self, double shortMA, double longMA)
 	{
-
-		//if (self.m_state == NONE)
-		//{
-			if (shortMA > (longMA * (1.0 + self.m_theta)))
-			{
-				self.m_state = BUY;
-			}
-			else if (shortMA < (longMA * (1.0 - self.m_theta)))
-			{
-				self.m_state = SELL;
-			}
-		//}
-		//else if (self.m_state == BUY)
-		//{
-		//	if (shortMA < (longMA * (1.0 - self.m_theta)))
-		//	{
-		//		self.m_state = SELL;
-		//	}
-		//}
-		//else if (self.m_state == SELL)
-		//{
-		//	if (shortMA > (longMA * (1.0 + self.m_theta)))
-		//	{
-		//		self.m_state = BUY;
-		//	}
-		//	else if (shortMA < (longMA * (1.0 - self.m_theta)))
-		//	{
-		//		self.m_state = SELL;
-		//	}
-		//	else
-		//	{
-		//		self.m_state = NONE;
-		//	}
-		//
-		//}
+		if (shortMA > (longMA * (1.0 + self.m_theta)))
+		{
+			self.m_state = BUY;
+		}
+		else if (shortMA < (longMA * (1.0 - self.m_theta)))
+		{
+			self.m_state = SELL;
+		}
 	}
 
 private:
