@@ -5,6 +5,8 @@
 #include "Algorithm.h"
 #include "State.h"
 
+#include <vector>
+
 class SMA : public Algorithm
 {
 public: 
@@ -14,27 +16,22 @@ public:
 
 	void setTheta(double theta);
 	[[nodiscard]] STATE getState() const override { return m_state; }
-	STATE update(const MarketTick& tick) override {
-		return m_state;
-	};
+	STATE update(const MarketTick& tick) override;
 	void reset() override;
 
 	template <typename Self>
 	void operator()(this Self&& self, double shortMA, double longMA)
 	{
-		if (shortMA > (longMA * (1.0 + self.m_theta)))
-		{
-			self.m_state = BUY;
-		}
-		else if (shortMA < (longMA * (1.0 - self.m_theta)))
-		{
-			self.m_state = SELL;
-		}
+
 	}
 
 private:
+	double calculateShortMA() const;
+	double calculateLongMA() const;
+
 	double m_theta;
 	STATE m_state;
+	std::vector<MarketTick> m_ticks;
 };
 
 #endif // !SMA_H

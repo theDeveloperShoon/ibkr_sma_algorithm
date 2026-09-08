@@ -6,7 +6,7 @@
 #include <print>
 #include <iostream>
 
-class BackTester_SMA {
+class BackTester_SMA{
 public:
 	BackTester_SMA();
 	~BackTester_SMA();
