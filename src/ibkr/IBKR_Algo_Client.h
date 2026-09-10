@@ -4,7 +4,7 @@
 
 #include "EWrapper.h"
 #include "EReaderOSSignal.h"
-#include "EReader.h" 
+#include "EReader.h"
 
 #include <memory>
 

@@ -40,6 +40,7 @@ target_compile_options(tws_api PUBLIC
 
 add_library(dev_algo_core STATIC
 	backtesting/BackTester.cpp
+	backtesting/BackTester_SMA.cpp
 	core/Utility.cpp
 	ibkr/IBKR_Algo_Client.cpp
 	sma/SMA.cpp

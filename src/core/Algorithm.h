@@ -3,6 +3,7 @@
 #define ALGORITHM_H
 
 #include "State.h"
+#include "MarketTick.hpp"
 
 class Algorithm {
 public:

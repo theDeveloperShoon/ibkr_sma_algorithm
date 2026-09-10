@@ -1,4 +1,4 @@
-#include "BackTester.h"
+#include "BackTester_SMA.h"
 
 #include <ranges>
 #include <iostream>

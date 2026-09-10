@@ -11,7 +11,8 @@
 #include "EReader.h"
 
 #include "SMA.h"
-#include "BackTester.h"
+#include "BackTester_SMA.h"
+#include "Backtester.hpp"
 #include "State.h"
 
 #include <print>
@@ -55,12 +56,15 @@ int main()
 {
 	const size_t longWindow = 50;
 
+	Backtester backtest;
 	SMA sma(0.01);
 	BackTester_SMA backTester;
 	csvData data;
 
 	std::println("Reading CSV file: {}", DATA_DIRECTORY);
-	backTester.readCSV(data, DATA_DIRECTORY);
+	backtest.readCSV(data, DATA_DIRECTORY);
+
+
 	
 	std::vector<double> longMAValues(data.Open.size()-longWindow+1, 0.0);
 	backTester.calculateMovingAverages(data.Open, longWindow, longMAValues);
