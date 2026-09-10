@@ -11,6 +11,11 @@ SMA::SMA(double theta) : m_theta(theta), m_state(NONE)
 {
 }
 
+SMA::SMA(double theta, std::size_t shortMAWindow, std::size_t longMAWindow)
+	: m_theta(theta), m_shortMAWindow(shortMAWindow), m_longMAWindow(longMAWindow), m_state(NONE)
+{
+}
+
 SMA::~SMA()
 {
 }
@@ -20,10 +25,10 @@ void SMA::setTheta(double theta)
 	m_theta = theta;
 }
 
-STATE SMA::getState() const
-{
-	return m_state;
-}
+//STATE SMA::getState() const
+//{
+//	return m_state;
+//}
 
 STATE SMA::update(const MarketTick& tick)
 {
@@ -51,21 +56,28 @@ void SMA::reset()
 
 double SMA::calculateShortMA() const
 {
-
 	double ma = 0.0;
-	if (m_ticks.size() >= 2)
+	if (m_ticks.size() >= m_shortMAWindow)
 	{
-		//for(auto tick : m_ticks | std::views::take(2))
-		//{
-		//	ma += tick.close;
-		//}
-		//ma /= 2;
+		for(const MarketTick& tick : m_ticks | std::views::drop(m_ticks.size() - m_shortMAWindow))
+		{
+			ma += tick.close;
+		}
+		ma /= static_cast<double>(m_shortMAWindow);
 	}
 	return ma;
 }
 
 double SMA::calculateLongMA() const
 {
-	// Placeholder for actual long-term moving average calculation
-	return 0.0;
+	double ma = 0.0;
+	if (m_ticks.size() >= m_longMAWindow)
+	{
+		for(const MarketTick& tick : m_ticks | std::views::drop(m_ticks.size() - m_longMAWindow))
+		{
+			ma += tick.close;
+		}
+		ma /= static_cast<double>(m_longMAWindow);
+	}
+	return ma;
 }
