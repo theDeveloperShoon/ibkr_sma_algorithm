@@ -1,9 +1,7 @@
-﻿// IBKR_CMAKE_MEAN_REVERSION.cpp : Defines the entry point for the application.
+﻿// main.cpp : Defines the entry point for the application.
 //
 
 #include "main.h"
-
-
 #include "EWrapper.h"
 #include "EClientSocket.h"
 #include "EReaderOSSignal.h"
@@ -11,6 +9,7 @@
 #include "EReader.h"
 
 #include "SMA.h"
+#include "OldSMA.hpp"
 #include "BackTester_SMA.h"
 #include "Backtester.hpp"
 #include "State.h"
@@ -20,6 +19,8 @@
 #include <algorithm>
 #include <ranges>
 #include <cmath>
+#include <tuple>
+#include <vector>
 
 #include <cpr/cpr.h>
 #include <magic_enum/magic_enum.hpp>
@@ -54,18 +55,70 @@ void reverseAll(Vectors&... vecs) {
 
 int main()
 {
+	const size_t shortWindow = 1;
 	const size_t longWindow = 50;
 
 	Backtester backtest;
-	SMA sma(0.01);
+	SMA sma(0.01, 1, longWindow);
+	OLDSMA oldSMA(0.01);
+
+
 	BackTester_SMA backTester;
 	csvData data;
 
 	std::println("Reading CSV file: {}", DATA_DIRECTORY);
 	backtest.readCSV(data, DATA_DIRECTORY);
 
+	std::vector<MarketTick> marketData;
 
-	
+
+	auto zippedData = std::views::zip(data.Date, data.Open, data.High, data.Low, data.Close);
+
+	for (auto&& [date, open, high, low, close] : zippedData) {
+		marketData.push_back({ date, open, high, low, close });
+	}
+
+	double tradingCapital = 10000.0;
+	purchaseData purchase = { "", 0.0, 0 };
+	bool isHoldingPosition = false;
+
+	backtest.runTest(sma, marketData, [&tradingCapital, &purchase, &isHoldingPosition](const MarketTick& tick, STATE state) {
+		if (state == BUY && !isHoldingPosition) {
+			double openingSharePrice = tick.open;
+			double sharesToBuy = floor(tradingCapital / openingSharePrice);
+			tradingCapital -= sharesToBuy * openingSharePrice;
+			purchase = { tick.date, openingSharePrice, static_cast<int>(sharesToBuy) };
+			isHoldingPosition = true;
+
+			std::println(
+				"[Buy] Bought {} shares at ${} on Date: {} | Remaining Capital: ${}",
+				sharesToBuy, openingSharePrice, tick.date, tradingCapital
+			);
+		}
+		else if (state == SELL && isHoldingPosition) {
+			double openingSharePrice = tick.open;
+			double  value = openingSharePrice * purchase.shares;
+			tradingCapital += value;
+			isHoldingPosition = false;
+
+			std::println(
+				"[Sell] Sold {} shares at ${} on Date: {} | New Capital: ${}",
+				purchase.shares, openingSharePrice, tick.date, tradingCapital
+			);
+		}
+	});
+
+	if (purchase.shares > 0) {
+		double priceAShare = data.Open[data.Open.size() - 1];
+		double value = (priceAShare) * purchase.shares;
+		tradingCapital += value;
+		purchase = { "", 0.0, 0 };
+	}
+
+	std::println("Final Capital: {}", tradingCapital);
+
+	std::print("\n\n\nOld SMA Backtesting:\n\n");
+	//
 	std::vector<double> longMAValues(data.Open.size()-longWindow+1, 0.0);
 	backTester.calculateMovingAverages(data.Open, longWindow, longMAValues);
 
@@ -84,7 +137,7 @@ int main()
 	const std::size_t sizeDifference = data.Open.size() - longMAValues.size();
 	std::println("Size Difference: {}", sizeDifference);
 
-	backTester.runTest(sma, [&data, &longMAValues, &shortMAValues](SMA& simpleMovingAverage) {
+	backTester.runTest(oldSMA, [&data, &longMAValues, &shortMAValues](OLDSMA& simpleMovingAverage) {
 		STATE previousState = simpleMovingAverage.getState();
 		double capital = 10000.0;
 		purchaseData purchase = { "", 0.0, 0 };
