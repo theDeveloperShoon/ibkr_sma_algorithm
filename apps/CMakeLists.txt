@@ -7,6 +7,7 @@ target_link_libraries(IBKR_SMA_ALGORITHM PRIVATE dev_algo_core)
 
 set_target_properties(IBKR_SMA_ALGORITHM PROPERTIES 
 	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+	VS_DEBUGGER_COMMAND_ARGUMENTS "> console_output.txt 2>&1"
 )
 
 target_compile_definitions(IBKR_SMA_ALGORITHM PRIVATE 
