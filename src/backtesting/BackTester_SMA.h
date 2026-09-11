@@ -1,5 +1,5 @@
 #include "State.h"
-#include "SMA.h"
+#include "OldSMA.hpp"
 
 #include <functional>
 #include <string>
@@ -11,8 +11,8 @@ public:
 	BackTester_SMA();
 	~BackTester_SMA();
 	void runTest(
-		SMA& sma,
-		std::function<void(SMA&)> callback
+		OLDSMA& sma,
+		std::function<void(OLDSMA&)> callback
 	);
 	void retrieveDatabaseData();
 
