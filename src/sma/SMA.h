@@ -25,12 +25,13 @@ public:
 	void setLongMAWindow(std::size_t window) { m_longMAWindow = window; }
 
 private:
+	double calculateOldOneDayMA() const;
 	double calculateShortMA() const;
 	double calculateLongMA() const;
 
 	double m_theta;
 
-	std::size_t m_shortMAWindow = 2; // Default short-term moving average window size
+	std::size_t m_shortMAWindow = 1; // Default short-term moving average window size
 	std::size_t m_longMAWindow = 50;  // Default long-term moving average window size
 
 	STATE m_state;
