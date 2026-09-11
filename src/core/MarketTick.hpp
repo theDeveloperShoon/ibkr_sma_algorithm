@@ -2,8 +2,10 @@
 #ifndef MARKETTICK_HPP
 #define MARKETTICK_HPP
 
+#include <string>
+
 struct MarketTick {
-	double price;
+	std::string date;
 	double open;
 	double high;
 	double low;
