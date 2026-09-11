@@ -44,6 +44,7 @@ add_library(dev_algo_core STATIC
 	core/Utility.cpp
 	ibkr/IBKR_Algo_Client.cpp
 	sma/SMA.cpp
+	sma/OldSMA.cpp
 )
 
 target_include_directories(dev_algo_core PUBLIC
