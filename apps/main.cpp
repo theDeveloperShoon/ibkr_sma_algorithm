@@ -115,7 +115,9 @@ int main()
 		purchase = { "", 0.0, 0 };
 	}
 
+	std::println("Final Tick Count Processed: {}", marketData.size());
 	std::println("Final Capital: {}", tradingCapital);
+	
 
 	std::print("\n\n\nOld SMA Backtesting:\n\n");
 	//
@@ -125,10 +127,10 @@ int main()
 	std::vector<double> shortMAValues(data.Open.size() - longWindow+1, 0.0);
 	double shortMA = 0.0;
 	for (auto [index, price] : std::views::enumerate(data.Open)) {
-		if (index > longWindow - 1)
+		if (index >= longWindow - 1)
 		{
 			shortMA = (price + data.Close[index - 1]) / 2.0;
-			shortMAValues[index - longWindow] = shortMA;
+			shortMAValues[index - longWindow + 1] = shortMA;
 		}
 	}
 
@@ -136,6 +138,7 @@ int main()
 
 	const std::size_t sizeDifference = data.Open.size() - longMAValues.size();
 	std::println("Size Difference: {}", sizeDifference);
+
 
 	backTester.runTest(oldSMA, [&data, &longMAValues, &shortMAValues](OLDSMA& simpleMovingAverage) {
 		STATE previousState = simpleMovingAverage.getState();
@@ -147,6 +150,8 @@ int main()
 			double longMA = longMAValues[i];
 			double shortMA = shortMAValues[i];
 			simpleMovingAverage(shortMA, longMA);
+
+			//std::println(std::clog, "--LOG-- Short MA: {}, Long MA: {}, Date: {}", shortMA, longMA, data.Date[i + 49]);
 
 			if (simpleMovingAverage.getState() != previousState) {
 				//std::println("State: {}", magic_enum::enum_name(simpleMovingAverage.getState()));
