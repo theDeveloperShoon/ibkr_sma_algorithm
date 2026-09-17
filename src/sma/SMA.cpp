@@ -35,20 +35,31 @@ STATE SMA::update(const MarketTick& tick)
 {
 	m_ticks.push_back(tick);
 
-	double shortMA = calculateShortMA();
+	if (m_ticks.size() < m_longMAWindow)
+	{
+		m_state = NONE;
+		return m_state;
+	}
+
+	double shortMA = calculateOldOneDayMA();
 	double longMA = calculateLongMA();
+
 
 	if (shortMA > (longMA * (1.0 + m_theta)))
 	{
+		//std::println(std::clog, "--LOG-- Short MA: {}, Long MA: {}, Theta: {}, State: BUY, Date: {}", shortMA, longMA, m_theta, tick.date);
 		m_state = BUY;
 	}
 	else if (shortMA < (longMA * (1.0 - m_theta)))
 	{
+		//std::println(std::clog, "--LOG-- Short MA: {}, Long MA: {}, Theta: {}, State: SELL, Date: {}", shortMA, longMA, m_theta, tick.date);
 		m_state = SELL;
 	}
 	else {
 		m_state = NONE;
 	}
+
+	//std::println(std::clog, "--LOG-- Short MA: {}, Long MA: {}, Theta: {}, State: {}, Date: {}", shortMA, longMA, m_theta, m_state == BUY ? "BUY" : (m_state == SELL ? "SELL" : "NONE"), tick.date);
 
 	return m_state;
 }

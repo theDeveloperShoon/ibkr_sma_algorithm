@@ -19,6 +19,7 @@ public:
 
 	[[nodiscard]] STATE getState() const override { return m_state; }
 	STATE update(const MarketTick& tick) override;
+	[[nodiscard]] std::size_t getTicksSize() const { return m_ticks.size(); }
 	void reset() override;
 
 	void setShortMAWindow(std::size_t window) { m_shortMAWindow = window; }
