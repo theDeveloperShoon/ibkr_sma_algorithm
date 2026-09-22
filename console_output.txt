@@ -1,0 +1,76 @@
+Reading CSV file: C:/Users/Sean/source/repos/ibkr_sma_algorithm/apps/VOO_1d_data.csv
+CSV file read successfully: C:/Users/Sean/source/repos/ibkr_sma_algorithm/apps/VOO_1d_data.csv
+[Buy] Bought 14 shares at $694.54 on Date: Jun 01, 2026 | Remaining Capital: $276.4400000000005
+[Sell] Sold 14 shares at $680.18 on Date: May 18, 2026 | New Capital: $9798.96
+[Buy] Bought 15 shares at $637.65 on Date: Feb 26, 2026 | Remaining Capital: $234.20999999999913
+[Sell] Sold 15 shares at $623.05 on Date: Dec 18, 2025 | New Capital: $9579.96
+[Buy] Bought 15 shares at $631.71 on Date: Oct 28, 2025 | Remaining Capital: $104.30999999999767
+[Sell] Sold 15 shares at $614.25 on Date: Oct 23, 2025 | New Capital: $9318.059999999998
+[Buy] Bought 17 shares at $530.56 on Date: Mar 26, 2025 | Remaining Capital: $298.53999999999905
+[Sell] Sold 17 shares at $529.4 on Date: Jan 13, 2025 | New Capital: $9298.339999999998
+[Buy] Bought 16 shares at $557.13 on Date: Dec 16, 2024 | Remaining Capital: $384.2599999999984
+[Sell] Sold 16 shares at $542.78 on Date: Nov 20, 2024 | New Capital: $9068.739999999998
+[Buy] Bought 17 shares at $517.33 on Date: Jul 16, 2024 | Remaining Capital: $274.1299999999974
+[Sell] Sold 17 shares at $490.99 on Date: Jun 11, 2024 | New Capital: $8620.959999999997
+[Buy] Bought 17 shares at $482.62 on Date: Mar 21, 2024 | Remaining Capital: $416.41999999999643
+[Sell] Sold 17 shares at $464.49 on Date: Feb 28, 2024 | New Capital: $8312.749999999996
+[Buy] Bought 20 shares at $409.46 on Date: Sep 20, 2023 | Remaining Capital: $123.54999999999654
+[Sell] Sold 20 shares at $404.77 on Date: Jul 11, 2023 | New Capital: $8218.949999999997
+[Buy] Bought 21 shares at $375.66 on Date: Feb 16, 2023 | Remaining Capital: $330.0899999999965
+[Sell] Sold 21 shares at $358.45 on Date: Jan 20, 2023 | New Capital: $7857.539999999996
+[Buy] Bought 20 shares at $377.11 on Date: Dec 13, 2022 | Remaining Capital: $315.3399999999956
+[Sell] Sold 20 shares at $349.08 on Date: Nov 09, 2022 | New Capital: $7296.939999999995
+[Buy] Bought 20 shares at $355.38 on Date: Sep 20, 2022 | Remaining Capital: $189.3399999999947
+[Sell] Sold 20 shares at $363.84 on Date: Jul 25, 2022 | New Capital: $7466.139999999994
+[Buy] Bought 19 shares at $376.24 on Date: Jun 09, 2022 | Remaining Capital: $317.57999999999356
+[Sell] Sold 19 shares at $387.07 on Date: Mar 14, 2022 | New Capital: $7671.9099999999935
+[Buy] Bought 18 shares at $408.18 on Date: Feb 15, 2022 | Remaining Capital: $324.6699999999937
+[Sell] Sold 18 shares at $405.66 on Date: Jan 26, 2022 | New Capital: $7626.549999999994
+[Buy] Bought 18 shares at $417.17 on Date: Jan 20, 2022 | Remaining Capital: $117.48999999999342
+[Sell] Sold 18 shares at $414.42 on Date: Dec 02, 2021 | New Capital: $7577.049999999994
+[Buy] Bought 17 shares at $429.57 on Date: Nov 23, 2021 | Remaining Capital: $274.3599999999942
+[Sell] Sold 17 shares at $423.19 on Date: Nov 01, 2021 | New Capital: $7468.589999999994
+[Buy] Bought 17 shares at $416.8 on Date: Sep 02, 2021 | Remaining Capital: $382.9899999999934
+[Sell] Sold 17 shares at $401.09 on Date: Aug 19, 2021 | New Capital: $7201.519999999993
+Final Tick Count Processed: 1255
+Final Capital: 14134.459999999992
+
+
+
+Old SMA Backtesting:
+
+Long MA Size: 1206, Short MA Size: 1206
+Size Difference: 49
+[Buy] Bought 14  shares at $694.54 on Date: Jun 01, 2026 | Short MA: 696.4, Long MA: 688.0777999999998
+[Sell] Sold 14 shares at $680.18 on Date: May 18, 2026 | Short MA: 677.385, Long MA: 685.2959999999998
+[Buy] Bought 15  shares at $637.65 on Date: Feb 26, 2026 | Short MA: 634.345, Long MA: 627.8291999999997
+[Sell] Sold 15 shares at $623.05 on Date: Dec 18, 2025 | Short MA: 625.305, Long MA: 632.4891999999996
+[Buy] Bought 15  shares at $631.71 on Date: Oct 28, 2025 | Short MA: 631.83, Long MA: 625.4971999999995
+[Sell] Sold 15 shares at $614.25 on Date: Oct 23, 2025 | Short MA: 618.4, Long MA: 624.7213999999994
+[Buy] Bought 17  shares at $530.56 on Date: Mar 26, 2025 | Short MA: 525.885, Long MA: 514.4793999999996
+[Sell] Sold 17 shares at $529.4 on Date: Jan 13, 2025 | Short MA: 532.3299999999999, Long MA: 542.2651999999994
+[Buy] Bought 16  shares at $557.13 on Date: Dec 16, 2024 | Short MA: 556.29, Long MA: 550.1521999999993
+[Sell] Sold 16 shares at $542.78 on Date: Nov 20, 2024 | Short MA: 544.21, Long MA: 549.7579999999995
+[Buy] Bought 17  shares at $517.33 on Date: Jul 16, 2024 | Short MA: 514.5600000000001, Long MA: 506.84479999999945
+[Sell] Sold 17 shares at $490.99 on Date: Jun 11, 2024 | Short MA: 494.315, Long MA: 502.2045999999996
+[Buy] Bought 17  shares at $482.62 on Date: Mar 21, 2024 | Short MA: 480.9, Long MA: 475.31559999999956
+[Sell] Sold 17 shares at $464.49 on Date: Feb 28, 2024 | Short MA: 465.71000000000004, Long MA: 471.23479999999984
+[Buy] Bought 20  shares at $409.46 on Date: Sep 20, 2023 | Short MA: 403.69, Long MA: 398.9657999999996
+[Sell] Sold 20 shares at $404.77 on Date: Jul 11, 2023 | Short MA: 407.265, Long MA: 411.51199999999955
+[Buy] Bought 21  shares at $375.66 on Date: Feb 16, 2023 | Short MA: 374.94000000000005, Long MA: 369.6789999999995
+[Sell] Sold 21 shares at $358.45 on Date: Jan 20, 2023 | Short MA: 363.29499999999996, Long MA: 368.0551999999996
+[Buy] Bought 20  shares at $377.11 on Date: Dec 13, 2022 | Short MA: 372.135, Long MA: 364.4237999999995
+[Sell] Sold 20 shares at $349.08 on Date: Nov 09, 2022 | Short MA: 355.885, Long MA: 360.52339999999936
+[Buy] Bought 20  shares at $355.38 on Date: Sep 20, 2022 | Short MA: 351.845, Long MA: 348.24799999999965
+[Sell] Sold 20 shares at $363.84 on Date: Jul 25, 2022 | Short MA: 361.54499999999996, Long MA: 367.8663999999998
+[Buy] Bought 19  shares at $376.24 on Date: Jun 09, 2022 | Short MA: 367.255, Long MA: 363.2785999999997
+[Sell] Sold 19 shares at $387.07 on Date: Mar 14, 2022 | Short MA: 389.40999999999997, Long MA: 394.58839999999947
+[Buy] Bought 18  shares at $408.18 on Date: Feb 15, 2022 | Short MA: 409.385, Long MA: 403.2153999999996
+[Sell] Sold 18 shares at $405.66 on Date: Jan 26, 2022 | Short MA: 401.1, Long MA: 405.3043999999996
+[Buy] Bought 18  shares at $417.17 on Date: Jan 20, 2022 | Short MA: 409.93, Long MA: 404.5015999999994
+[Sell] Sold 18 shares at $414.42 on Date: Dec 02, 2021 | Short MA: 415.63, Long MA: 422.71219999999937
+[Buy] Bought 17  shares at $429.57 on Date: Nov 23, 2021 | Short MA: 430.54999999999995, Long MA: 424.2797999999993
+[Sell] Sold 17 shares at $423.19 on Date: Nov 01, 2021 | Short MA: 423.94, Long MA: 429.2203999999995
+[Buy] Bought 17  shares at $416.8 on Date: Sep 02, 2021 | Short MA: 416.685, Long MA: 411.9907999999995
+[Sell] Sold 17 shares at $401.09 on Date: Aug 19, 2021 | Short MA: 404.35, Long MA: 408.80259999999953
+Final Capital: 7201.519999999993

@@ -29,7 +29,7 @@ using namespace std;
 
 const unsigned MAX_ATTEMPTS = 50;
 const unsigned SLEEP_TIME = 10; // milliseconds
-const std::string DATA_DIRECTORY = std::string(CSV_DIRECTORY) + "/LMT_history1.csv";
+const std::string DATA_DIRECTORY = std::string(CSV_DIRECTORY) + "/VOO_1d_data.csv";
 
 struct csvData {
 	std::vector<std::string> Date;

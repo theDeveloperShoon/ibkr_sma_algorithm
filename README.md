@@ -1,19 +1,55 @@
-# IBKR_CWMR_STRATEGY
+# IBKR_SMA_STRATEGY
 
-This project implements a Confidence Weighted Mean Reversion (CWMR) trading strategy 
-using the Interactive Brokers (IBKR) API. The strategy is designed to analyze market data 
-and execute trades based on predefined criteria. 
+## Project Summary
+
+Simple Moving Average (SMA) backtester integration implementned in modern C++ (C++23). The repo contains:
+- deterministic backtester (SMA strategy)
+- CSV input loader and deterministic trade logging
+
+## Features
+- Backtesting engine with configurable parameters for SMA strategy
+- CSV dataset loader and example dataset(s) for backtesting
+- Deterministic portfolio simulation with order execution and PnL calculation (sample output `console_output.txt`)
+- Unit tests, integration tests, and performance benchmarks for the backtester and order-simulation engine
+- Optional: TWS API integration using protobuf-generated bindings for live trading experiments
 
 ## Compiling and Execution
 
 ### Prequisites
-- C++23 compatible compiler (e.g., GCC, Clang, MSVC)
-- CMake 3.25 or later
-- vcpkg package manager (for dependency management)
+- Visual Studio (MSVC) with C++23 workload (Windows) or GCC/Clang on Linux/macOS
+- Build: CMake (>= 3.25) and Ninja build system
+- Dependency Management: vcpkg package manager (manifest mode)
+
+
+Required vcpkg packages (from `vcpkg.json`):
 - Protobuf (5.29.5) compiler (protoc) for generating C++ classes from .proto files
-- Intelrdfpmathlib library for advanced mathematical computations
-- Threads support for concurrent execution
-- ws2_32 library for Windows socket programming
+- Intelrdfpmathlib 
+- cpr
+- glaze
+- magic-enum
+
+Notes: 
+- `Threads` is used for standard threading support for concurrent execution
+- On Windows the project may link the `ws2_32` library when TWS API code is enabled.
+
+## Quickstart - Build (Windows PowerShell, MSVC + Ninja)
+
+1. From project root, configure with vcpkg toolchain (adjust path):
+```powershell
+cmake -S . -B build -G "Ninja" `
+  -DCMAKE_BUILD_TYPE=Release `
+  -DCMAKE_TOOLCHAIN_FILE="C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake"
+```
+
+2. Build:
+```powershell
+cmake --build build --config Release
+```
+
+3. Run demo/backtest (adjust binary path/name):
+```powershell
+
+```
 
 ### Using vcpkg for Dependency Management
 
