@@ -1,44 +1,7 @@
 set(TWSAPICPP_DIR "C:/TWS API/source/CppClient/client")
-
-file(GLOB TWS_API_SOURCES 
-	"${TWSAPICPP_DIR}/*.cpp"
-#	"${TWSAPICPP_DIR}/protobuf/*.cc"
-)
-
 set(TWSAPIPROTO_DIR "C:/TWS API/source/proto")
 
-file(GLOB TWS_API_PROTO_SOURCES
-	"${TWSAPIPROTO_DIR}/*.proto"
-)
-
-add_library(tws_api STATIC ${TWS_API_SOURCES})
-
-
-if(TWS_API_PROTO_SOURCES)
-	PROTOBUF_GENERATE(
-		TARGET tws_api
-		LANGUAGE cpp
-		PROTOS ${TWS_API_PROTO_SOURCES}
-		IMPORT_DIRS "${TWSAPIPROTO_DIR}"
-	)
-	#list(APPEND TWS_API_SOURCES ${TWS_API_PROTO_SRCS} ${TWS_API_PROTO_HDRS})
-endif()
-
-target_include_directories(tws_api PUBLIC ${TWSAPICPP_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-
-target_link_libraries(tws_api PUBLIC protobuf::libprotobuf)
-target_compile_options(tws_api PUBLIC
-	$<$<CXX_COMPILER_ID:MSVC>:
-		/W3
-		/wd4267
-		/wd4244
-	>
-	$<$<NOT:$<BOOL:${MSVC}>>:
-		-Wall -Wextra -pedantic -Werror
-	>
-)
-
-add_library(dev_algo_core STATIC
+set(DEV_ALGO_SOURCES 
 	backtesting/BackTester.cpp
 	backtesting/BackTester_SMA.cpp
 	core/Utility.cpp
@@ -47,16 +10,57 @@ add_library(dev_algo_core STATIC
 	sma/OldSMA.cpp
 )
 
-target_include_directories(dev_algo_core PUBLIC
+if(BUILD_TWS_API)
+	file(GLOB TWS_API_SOURCES "${TWSAPICPP_DIR}/*.cpp")
+	file(GLOB TWS_API_PROTO_SOURCES "${TWSAPIPROTO_DIR}/*.proto")
+
+	add_library(tws_api STATIC ${TWS_API_SOURCES})
+
+	if(TWS_API_PROTO_SOURCES)
+	PROTOBUF_GENERATE(
+		TARGET tws_api
+		LANGUAGE cpp
+		PROTOS ${TWS_API_PROTO_SOURCES}
+		IMPORT_DIRS "${TWSAPIPROTO_DIR}"
+	)
+	#list(APPEND TWS_API_SOURCES ${TWS_API_PROTO_SRCS} ${TWS_API_PROTO_HDRS})
+	endif()
+
+	target_include_directories(tws_api PUBLIC ${TWSAPICPP_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+	target_link_libraries(tws_api PUBLIC protobuf::libprotobuf)
+	target_compile_options(tws_api PUBLIC
+	$<$<CXX_COMPILER_ID:MSVC>:
+		/W3
+		/wd4267
+		/wd4244
+		>
+		$<$<NOT:$<BOOL:${MSVC}>>:
+			-Wall -Wextra -pedantic -Werror
+		>
+	)
+
+	list(APPEND DEV_ALGO_SOURCES ibkr/IBKR_Algo_Client.cpp)
+
+	set(EXTRA_PUBLIC_LIBS tws_api protobuf::libprotobuf)
+else()
+	set(EXTRA_PUBLIC_LIBS)
+endif()
+
+add_library(DEV_ALGO_CORE STATIC ${DEV_ALGO_SOURCES})
+
+
+
+
+
+target_include_directories(DEV_ALGO_CORE PUBLIC
 	backtesting
 	core
 	ibkr
 	sma
 )
 
-target_link_libraries(dev_algo_core PUBLIC
-	tws_api
-	protobuf::libprotobuf
+target_link_libraries(DEV_ALGO_CORE PUBLIC
+	${EXTRA_PUBLIC_LIBS}
 	unofficial::intelrdfpmathlib::decimal128
 	Threads::Threads
 	cpr::cpr
@@ -65,7 +69,13 @@ target_link_libraries(dev_algo_core PUBLIC
 	$<$<BOOL:${MSVC}>:ws2_32>
 )
 
-target_compile_options(dev_algo_core PRIVATE
+if(BUILD_TWS_API)
+	target_compile_definitions(DEV_ALGO_CORE PUBLIC BUILD_TWS_API=1)
+else()
+	target_compile_definitions(DEV_ALGO_CORE PUBLIC BUILD_TWS_API=0)
+endif()
+
+target_compile_options(DEV_ALGO_CORE PRIVATE
 	$<$<CXX_COMPILER_ID:MSVC>:
 		/Zc:preprocessor /W4 /WX
 	>

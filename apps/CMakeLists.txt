@@ -3,7 +3,7 @@ add_executable(IBKR_SMA_ALGORITHM
 	main.h
 )
 
-target_link_libraries(IBKR_SMA_ALGORITHM PRIVATE dev_algo_core)
+target_link_libraries(IBKR_SMA_ALGORITHM PRIVATE DEV_ALGO_CORE)
 
 set_target_properties(IBKR_SMA_ALGORITHM PROPERTIES 
 	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"

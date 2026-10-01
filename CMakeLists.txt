@@ -15,8 +15,12 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include (FetchContent)
 
+option(BUILD_TWS_API "Build TWS API integration wrapper and generate protobuf sources" ON)
+
 # Find vcpkg packages
-find_package (protobuf CONFIG REQUIRED)
+if(BUILD_TWS_API)
+	find_package (protobuf CONFIG REQUIRED)
+endif()
 find_package (unofficial-intelrdfpmathlib CONFIG REQUIRED)
 find_package (Threads REQUIRED)
 find_package (cpr CONFIG REQUIRED)

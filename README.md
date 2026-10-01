@@ -48,8 +48,22 @@ cmake --build build --config Release
 
 3. Run demo/backtest (adjust binary path/name):
 ```powershell
-
+.\build\apps\your_backtester_exe.exe --input apps/VOO_1d_data.csv --output build/results/console_output.txt
 ```
+
+4. Optional: disable TWS/protobuf generation if you only need the backtester core:
+```powershell
+cmake -S . -B build -G "Ninja" ` 
+  -DBUILD_TWS_API=OFF `
+  -DCMAKE_TOOLCHAIN_FILE="C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake"
+cmake --build build --config Release
+```
+
+## Testing
+
+- GoogleTest + GoogleMock are used for unit and integration testing.
+- Unit tests: SMA computations, signal generation, order sizing, portfolio/accounting math, CSV parsing
+- Integration tests: short deterministic backtest on small CSV asserting final capital and trade count
 
 ### Using vcpkg for Dependency Management
 
