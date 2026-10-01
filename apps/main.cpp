@@ -2,17 +2,11 @@
 //
 
 #include "main.h"
-#include "EWrapper.h"
-#include "EClientSocket.h"
-#include "EReaderOSSignal.h"
-#include "EReaderSignal.h"
-#include "EReader.h"
 
 #include "SMA.h"
 #include "OldSMA.hpp"
 #include "BackTester_SMA.h"
 #include "Backtester.hpp"
-#include "State.h"
 
 #include <print>
 #include <thread>
@@ -55,7 +49,7 @@ void reverseAll(Vectors&... vecs) {
 
 int main()
 {
-	const size_t shortWindow = 1;
+	//const size_t shortWindow = 1;
 	const size_t longWindow = 50;
 
 	Backtester backtest;
@@ -67,7 +61,7 @@ int main()
 	csvData data;
 
 	std::println("Reading CSV file: {}", DATA_DIRECTORY);
-	backtest.readCSV(data, DATA_DIRECTORY);
+	backtest.readCSV(data, DATA_DIRECTORY, TRUE);
 
 	std::vector<MarketTick> marketData;
 
