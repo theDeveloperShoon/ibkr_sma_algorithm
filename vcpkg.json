@@ -6,7 +6,8 @@
     "protobuf",
     "cpr",
     "glaze",
-    "magic-enum"
+    "magic-enum",
+    "gtest"
   ],
   "overrides": [
     {

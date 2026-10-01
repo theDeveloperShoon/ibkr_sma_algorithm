@@ -29,5 +29,6 @@ find_package (magic_enum CONFIG REQUIRED)
 
 add_subdirectory(src)
 add_subdirectory(apps)
+add_subdirectory(tests)
 
 # TODO: Add tests and install targets if needed.
