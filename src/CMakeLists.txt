@@ -47,12 +47,9 @@ else()
 endif()
 
 add_library(DEV_ALGO_CORE STATIC ${DEV_ALGO_SOURCES})
-
-
-
-
-
+ 
 target_include_directories(DEV_ALGO_CORE PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}
 	backtesting
 	core
 	ibkr
