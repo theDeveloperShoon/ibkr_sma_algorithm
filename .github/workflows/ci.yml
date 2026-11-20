@@ -64,7 +64,7 @@ jobs:
           cmake -S . -B build -G "Ninja" \
             -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_TWS_API=OFF \
-            -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake
+            "-DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
       - name: Build (Ninja, GCC)
         run: cmake --build build --config Release
