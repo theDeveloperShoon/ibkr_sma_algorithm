@@ -5,6 +5,7 @@
 #include "core/MarketTick.hpp"
 #include "core/STATE.h"
 
+
 TEST(BacktesterIntegration, SMAIntegration) {
 	Backtester backtester;
 	SMA sma(0.01);

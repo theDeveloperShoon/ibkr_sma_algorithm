@@ -28,6 +28,7 @@
           },
           "cacheVariables": {
             "CMAKE_BUILD_TYPE": "Debug",
+            "VCPKG_TARGET_TRIPLET": "x64-windows-static-md",
             "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "$env{VSINSTALLDIR}Common7/IDE/CommonExtensions/Microsoft/CMake/cmake/Microsoft/SegmentHeap.cmake"
           }
         },
