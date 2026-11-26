@@ -46,7 +46,6 @@ else()
 	set(DEV_ALGO_SOURCES 
 		backtesting/BackTester.cpp
 		backtesting/BackTester_SMA.cpp
-		core/Utility.cpp
 		sma/SMA.cpp
 		sma/OldSMA.cpp
 	)
