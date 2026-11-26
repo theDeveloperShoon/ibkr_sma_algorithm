@@ -41,7 +41,7 @@ STATE SMA::update(const MarketTick& tick)
 		return m_state;
 	}
 
-	double shortMA = calculateOldOneDayMA();
+	double shortMA = calculateShortMA();
 	double longMA = calculateLongMA();
 
 
@@ -66,6 +66,7 @@ STATE SMA::update(const MarketTick& tick)
 
 void SMA::reset()
 {
+	m_ticks.clear();
 	m_state = NONE;
 }
 

@@ -11,6 +11,7 @@ TEST(SMAUnit, StateTransitions) {
 	MarketTick tick2{ "2020-01-02", 101.0, 101, 0, 101 }; // Open: 101.0, Close: 101.0
 	MarketTick tick3{ "2020-01-03", 110.0, 102, 0, 110 }; // Open: 102.0, Close: 102.0
 
+
 	EXPECT_EQ(sma.update(tick1), STATE::NONE); // First tick, NONE
 	EXPECT_EQ(sma.update(tick2), STATE::NONE); // Second tick, still NONE
 	EXPECT_EQ(sma.update(tick3), STATE::BUY); // Third tick, should transition to BUY
