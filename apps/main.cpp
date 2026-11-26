@@ -61,7 +61,7 @@ int main()
 	csvData data;
 
 	std::println("Reading CSV file: {}", DATA_DIRECTORY);
-	backtest.readCSV(data, DATA_DIRECTORY, TRUE);
+	backtest.readCSV(data, DATA_DIRECTORY, true);
 
 	std::vector<MarketTick> marketData;
 
