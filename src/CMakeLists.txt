@@ -1,16 +1,16 @@
 set(TWSAPICPP_DIR "C:/TWS API/source/CppClient/client")
 set(TWSAPIPROTO_DIR "C:/TWS API/source/proto")
 
-set(DEV_ALGO_SOURCES 
-	backtesting/BackTester.cpp
-	backtesting/BackTester_SMA.cpp
-	core/Utility.cpp
-	ibkr/IBKR_Algo_Client.cpp
-	sma/SMA.cpp
-	sma/OldSMA.cpp
-)
-
 if(BUILD_TWS_API)
+	set(DEV_ALGO_SOURCES 
+		backtesting/BackTester.cpp
+		backtesting/BackTester_SMA.cpp
+		ibkr/IBKR_Algo_Client.cpp
+		core/Utility.cpp
+		sma/SMA.cpp
+		sma/OldSMA.cpp
+	)
+
 	file(GLOB TWS_API_SOURCES "${TWSAPICPP_DIR}/*.cpp")
 	file(GLOB TWS_API_PROTO_SOURCES "${TWSAPIPROTO_DIR}/*.proto")
 
@@ -43,11 +43,20 @@ if(BUILD_TWS_API)
 
 	set(EXTRA_PUBLIC_LIBS tws_api protobuf::libprotobuf)
 else()
+	set(DEV_ALGO_SOURCES 
+		backtesting/BackTester.cpp
+		backtesting/BackTester_SMA.cpp
+		core/Utility.cpp
+		sma/SMA.cpp
+		sma/OldSMA.cpp
+	)
+
 	set(EXTRA_PUBLIC_LIBS)
 endif()
 
 add_library(DEV_ALGO_CORE STATIC ${DEV_ALGO_SOURCES})
  
+
 target_include_directories(DEV_ALGO_CORE PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
 	backtesting
