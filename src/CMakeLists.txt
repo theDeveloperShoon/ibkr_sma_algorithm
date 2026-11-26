@@ -7,6 +7,7 @@ if(BUILD_TWS_API)
 		backtesting/BackTester_SMA.cpp
 		ibkr/IBKR_Algo_Client.cpp
 		core/Utility.cpp
+		core/State.h
 		sma/SMA.cpp
 		sma/OldSMA.cpp
 	)
@@ -46,6 +47,7 @@ else()
 	set(DEV_ALGO_SOURCES 
 		backtesting/BackTester.cpp
 		backtesting/BackTester_SMA.cpp
+		core/State.h
 		sma/SMA.cpp
 		sma/OldSMA.cpp
 	)
