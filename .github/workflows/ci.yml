@@ -23,8 +23,8 @@ jobs:
         shell: powershell
         run: |
           cmake -S . -B build -G "Ninja" `
-            -DBUILD_TWS_API=OFF `
             -DCMAKE_BUILD_TYPE=Release `
+            -DBUILD_TWS_API=OFF `
             "-DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}\vcpkg\scripts\buildsystems\vcpkg.cmake"
 
       - name: Build (Ninja, MSVC)
