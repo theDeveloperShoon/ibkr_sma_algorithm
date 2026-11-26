@@ -3,7 +3,7 @@
 #include "backtesting/Backtester.hpp"
 #include "sma/SMA.h"
 #include "core/MarketTick.hpp"
-#include "core/STATE.h"
+#include "core/State.h"
 
 
 TEST(BacktesterIntegration, SMAIntegration) {
