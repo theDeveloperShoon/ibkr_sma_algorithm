@@ -120,13 +120,19 @@ int main()
 
 	std::vector<double> shortMAValues(data.Open.size() - longWindow+1, 0.0);
 	double shortMA = 0.0;
-	for (auto [index, price] : std::views::enumerate(data.Open)) {
-		if (index >= longWindow - 1)
-		{
-			shortMA = (price + data.Close[index - 1]) / 2.0;
-			shortMAValues[index - longWindow + 1] = shortMA;
-		}
+	for (auto const [index, price] : data.Open | std::views::enumerate | std::views::drop(longWindow - 1)) {
+		const std::size_t i = static_cast<std::size_t>(index);
+		shortMA = (price + data.Close[i - 1]) / 2.0;
+		shortMAValues[i - longWindow + 1] = shortMA;
 	}
+
+	//for (auto const [index, price] : std::views::enumerate(data.Open)) {
+	//	if (index >= longWindow - 1)
+	//	{
+	//		shortMA = (price + data.Close[index - 1]) / 2.0;
+	//		shortMAValues[index - longWindow + 1] = shortMA;
+	//	}
+	//}
 
 	std::println("Long MA Size: {}, Short MA Size: {}", longMAValues.size(), shortMAValues.size());
 
